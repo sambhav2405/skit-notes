@@ -71,17 +71,17 @@
             
             <button onclick="toggleDarkMode()" class="text-xl p-2 rounded-full hover:bg-purple-100 dark:hover:bg-gray-700 transition cursor-pointer" id="themeToggle">🌙</button>
 
-            <button onclick="navigateTo('bounty')" class="hover:bg-orange-100 dark:hover:bg-orange-900 transition flex items-center gap-1 bg-orange-50 dark:bg-gray-700 text-orange-600 dark:text-orange-400 px-3 py-1.5 rounded-full border border-orange-200 dark:border-gray-600 cursor-pointer font-bold">
+            <button onclick="navigateTo('library')" class="hover:bg-yellow-100 dark:hover:bg-yellow-900 transition flex items-center gap-1 bg-yellow-50 dark:bg-gray-700 text-yellow-600 dark:text-yellow-400 px-3 py-1.5 rounded-full border border-yellow-200 dark:border-gray-600 cursor-pointer font-bold shadow-sm">
+                <span class="hidden sm:block">Library</span>
+                <span>⭐</span>
+            </button>
+
+            <button onclick="navigateTo('bounty')" class="hover:bg-orange-100 dark:hover:bg-orange-900 transition flex items-center gap-1 bg-orange-50 dark:bg-gray-700 text-orange-600 dark:text-orange-400 px-3 py-1.5 rounded-full border border-orange-200 dark:border-gray-600 cursor-pointer font-bold shadow-sm">
                 <span class="hidden sm:block">Requests</span>
                 <span>🎯</span>
             </button>
 
-            <button onclick="shareSite()" class="hover:text-purple-900 dark:hover:text-white transition flex items-center gap-1 bg-purple-50 dark:bg-gray-700 px-3 py-1.5 rounded-full border border-purple-200 dark:border-gray-600 cursor-pointer">
-                <span class="hidden sm:block text-purple-700 dark:text-white">Share</span>
-                <span class="sm:hidden text-purple-700 dark:text-white">🚀</span>
-            </button>
-
-            <button onclick="toggleUpload()" class="hover:bg-purple-200 transition bg-purple-100 dark:bg-purple-900 dark:text-white text-purple-800 px-4 py-1.5 rounded-full cursor-pointer">Upload</button>
+            <button onclick="toggleUpload()" class="hover:bg-purple-200 transition bg-purple-100 dark:bg-purple-900 dark:text-white text-purple-800 px-4 py-1.5 rounded-full cursor-pointer font-bold">Upload</button>
         </div>
     </nav>
 
@@ -177,7 +177,8 @@
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4Bk6I_G9a5-4AtooVhTmzCrCKHqrjIgjcVCULg2Zz_qgRzpWHvK54fVID6siNZhrs/exec'; 
         
         let GLOBAL_NOTES_DB = []; 
-        let GLOBAL_REQUESTS = []; // ✨ Array to hold requests ✨
+        let GLOBAL_REQUESTS = []; 
+        let uploadControllers = {}; // ✨ For Cancelling Uploads
         let isDarkMode = localStorage.getItem('theme') === 'dark';
 
         const dataTree = {
@@ -202,9 +203,8 @@
                 const response = await fetch(GOOGLE_SCRIPT_URL);
                 const fullData = await response.json();
                 
-                // ✨ FIX: Check if returning old format or new JSON format
                 if (Array.isArray(fullData)) {
-                    GLOBAL_NOTES_DB = fullData; // Old Backend Fallback
+                    GLOBAL_NOTES_DB = fullData; 
                 } else {
                     GLOBAL_NOTES_DB = fullData.notes || [];
                     GLOBAL_REQUESTS = fullData.requests || [];
@@ -251,6 +251,39 @@
             fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'upvote', id: id }) });
         }
 
+        // ✨ NEW: BEAUTIFUL SVG STAR BOOKMARK LOGIC ✨
+        function toggleBookmark(id, btnElement) {
+            let saved = JSON.parse(localStorage.getItem('my_library') || '[]');
+            const idStr = id.toString();
+            
+            if (saved.includes(idStr)) {
+                // Remove from library
+                saved = saved.filter(nId => nId !== idStr);
+                btnElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-gray-300 dark:text-gray-600 hover:text-yellow-400 transition-colors"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" /></svg>`;
+                
+                // Hide instantly if on library page
+                if (window.history.state && window.history.state.view === 'library') {
+                    btnElement.closest('.card-wrapper').style.display = 'none';
+                }
+            } else {
+                // Add to library
+                saved.push(idStr);
+                btnElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 text-yellow-400 drop-shadow-md hover:scale-110 transition-transform"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" /></svg>`;
+            }
+            localStorage.setItem('my_library', JSON.stringify(saved));
+        }
+
+        function getBookmarkHTML(id) {
+            let saved = JSON.parse(localStorage.getItem('my_library') || '[]');
+            const isSaved = saved.includes(id.toString());
+            
+            const iconHTML = isSaved 
+                ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 text-yellow-400 drop-shadow-md hover:scale-110 transition-transform"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" /></svg>` 
+                : `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-gray-300 dark:text-gray-600 hover:text-yellow-400 transition-colors"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" /></svg>`;
+            
+            return `<button onclick="toggleBookmark('${id}', this)" class="absolute top-4 right-4 z-20 cursor-pointer" title="Save to Library">${iconHTML}</button>`;
+        }
+
         function navigateTo(view, params = {}) { window.history.pushState({ view, params }, ""); renderView(view, params); }
         window.onpopstate = function(event) { if (event.state) renderView(event.state.view, event.state.params); else renderView('years'); };
 
@@ -261,12 +294,63 @@
             if (view === 'subjects') renderSubjects(params.year, params.sem);
             if (view === 'materialTypes') renderMaterialTypes(params.year, params.semNumber, params.subject);
             if (view === 'notes') renderNotes(params.semNumber, params.subject, params.type);
-            if (view === 'bounty') renderBountyBoard(); // ✨ Handle Bounty Route
+            if (view === 'bounty') renderBountyBoard(); 
+            if (view === 'library') renderLibrary(); 
         }
 
-        // ✨ NEW: RENDER BOUNTY BOARD UI ✨
+        function renderLibrary() {
+            searchContainer.classList.add('hidden');
+            let savedIds = JSON.parse(localStorage.getItem('my_library') || '[]');
+            let savedNotes = GLOBAL_NOTES_DB.filter(note => savedIds.includes(note.id.toString()));
+
+            let html = `
+                <div class="mb-6 flex justify-between items-center">
+                    <div>
+                        <button onclick="window.history.back()" class="text-purple-600 dark:text-purple-400 hover:underline mb-2 cursor-pointer block">← Back</button>
+                        <h2 class="text-3xl font-bold text-yellow-600 dark:text-yellow-400">My Library ⭐</h2>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Your personal collection for quick revision!</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            `;
+
+            if (savedNotes.length === 0) {
+                html += `<div class="col-span-full text-center py-16 bg-white dark:bg-gray-800 rounded-2xl card-shadow border-2 border-dashed border-yellow-200 dark:border-gray-700"><p class="text-yellow-600 dark:text-yellow-400 font-bold text-lg mb-2">Your library is empty! 📭</p><p class="text-sm text-gray-500 dark:text-gray-400">Click the ⭐ icon on any note to save it here.</p></div>`;
+            } else {
+                savedNotes.forEach(item => {
+                    const downloadUrl = item.file_url.replace('export=view', 'export=download');
+                    const isUpvoted = localStorage.getItem('upvoted_' + item.id);
+                    
+                    html += `
+                        <div class="card-wrapper relative bg-white dark:bg-gray-800 p-5 rounded-2xl card-shadow flex flex-col justify-between border border-purple-50 dark:border-gray-700 card-hover h-full group transition-all duration-300 select-none">
+                            
+                            ${getBookmarkHTML(item.id)}
+
+                            <div class="flex justify-between items-start mb-3 gap-3 pr-10">
+                                <div class="flex-1 min-w-0">
+                                    <span class="text-[10px] font-bold bg-purple-100 text-purple-700 px-2 py-1 rounded dark:bg-purple-900/30 dark:text-purple-300 mb-2 inline-block">${item.subject}</span>
+                                    <h3 class="font-bold text-purple-800 dark:text-purple-300 text-lg leading-tight line-clamp-2 break-all group-hover:line-clamp-none transition-all duration-300 cursor-default" title="${item.title}">${item.title}</h3>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2 break-all group-hover:line-clamp-none transition-all duration-300 cursor-default" title="Uploaded by: ${item.uploader}">Uploaded by: <b>${item.uploader}</b> • ${item.file_size || 'PDF'}</p>
+                                </div>
+                                <button onclick="upvote('${item.id}', this)" class="${isUpvoted ? 'bg-green-100 text-green-700' : 'bg-purple-100 text-purple-700 hover:bg-purple-200'} shrink-0 px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1 transition z-10 relative cursor-pointer">
+                                    👍 <span class="count">${item.upvotes}</span>
+                                </button>
+                            </div>
+                            <div class="flex gap-2 w-full mt-auto pt-2">
+                                <button onclick="openPDF('${item.file_url}')" class="flex-1 bg-purple-600 text-white py-2 rounded-lg font-semibold hover:bg-purple-700 transition shadow-md text-sm cursor-pointer">👀 Read</button>
+                                <a href="${downloadUrl}" target="_blank" class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white py-2 rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition shadow-md text-sm text-center cursor-pointer">⬇️ Save</a>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            appDiv.innerHTML = html + `</div>`;
+        }
+
         function renderBountyBoard() {
             searchContainer.classList.add('hidden');
+            let myReqs = JSON.parse(localStorage.getItem('my_requests') || '[]');
+
             let html = `
                 <div class="mb-6 flex justify-between items-center">
                     <div>
@@ -283,14 +367,22 @@
                 html += `<div class="col-span-full text-center py-16 bg-white dark:bg-gray-800 rounded-2xl card-shadow border-2 border-dashed border-orange-200 dark:border-gray-700"><p class="text-orange-500 dark:text-orange-400 font-bold text-lg">No requests yet! Everyone is fully prepared 😂</p></div>`;
             } else {
                 GLOBAL_REQUESTS.forEach(req => {
+                    // ✨ Delete logic check ✨
+                    const deleteBtn = myReqs.includes(req.id.toString()) 
+                        ? `<button onclick="deleteRequest('${req.id}')" class="text-red-500 hover:text-red-700 text-xs font-bold border border-red-200 bg-red-50 px-2 py-0.5 rounded cursor-pointer z-10 transition">🗑️ Delete</button>` 
+                        : ``;
+
                     html += `
                         <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl card-shadow border-l-4 border-orange-400 flex flex-col justify-between hover:shadow-lg transition cursor-default">
                             <div>
                                 <div class="flex justify-between items-start mb-2">
                                     <span class="text-[10px] font-bold bg-orange-100 text-orange-700 px-2 py-1 rounded dark:bg-orange-900/30 dark:text-orange-300">Sem ${req.semester}</span>
-                                    <span class="text-[10px] text-gray-400">${req.date}</span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[10px] text-gray-400">${req.date}</span>
+                                        ${deleteBtn}
+                                    </div>
                                 </div>
-                                <h3 class="font-bold text-slate-800 dark:text-gray-100 text-lg leading-tight mb-2">${req.subject}</h3>
+                                <h3 class="font-bold text-slate-800 dark:text-gray-100 text-lg leading-tight mb-2 pr-2">${req.subject}</h3>
                                 <p class="text-sm text-gray-600 dark:text-gray-300 bg-orange-50 dark:bg-gray-700/50 p-3 rounded-lg border border-orange-100 dark:border-gray-600 italic mb-4">"${req.message}"</p>
                                 <p class="text-xs text-gray-500 dark:text-gray-400 mb-4 flex items-center gap-1">👤 Requested by: <b>${req.name}</b></p>
                             </div>
@@ -302,7 +394,25 @@
             appDiv.innerHTML = html + `</div>`;
         }
 
-        // ✨ NEW: REQUEST MODAL LOGIC ✨
+        // ✨ NEW: DELETE REQUEST FUNCTION ✨
+        function deleteRequest(id) {
+            if(confirm("Are you sure you want to delete this request?")) {
+                // Update Local Array
+                GLOBAL_REQUESTS = GLOBAL_REQUESTS.filter(r => r.id.toString() !== id.toString());
+                
+                // Update LocalStorage
+                let myReqs = JSON.parse(localStorage.getItem('my_requests') || '[]');
+                myReqs = myReqs.filter(rid => rid !== id.toString());
+                localStorage.setItem('my_requests', JSON.stringify(myReqs));
+                
+                // Render UI instantly
+                renderBountyBoard(); 
+                
+                // Call backend to delete
+                fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'delete_request', id: id }) });
+            }
+        }
+
         function openRequestModal() {
             document.getElementById('requestModal').classList.remove('hidden');
             document.getElementById('requestModal').classList.add('flex');
@@ -324,15 +434,20 @@
 
             if(!msg) { alert("Bhai message toh likh de kya chahiye!"); return; }
 
-            const payload = { action: 'request', name: name, semester: sem, subject: sub, message: msg };
+            const reqId = Date.now().toString();
+            const payload = { action: 'request', id: reqId, name: name, semester: sem, subject: sub, message: msg };
             
-            // Instantly update UI 
-            GLOBAL_REQUESTS.unshift({ id: Date.now(), name: name, semester: sem, subject: sub, message: msg, date: "Just Now", status: "Open" });
+            // ✨ Save ID locally so user can delete later
+            let myReqs = JSON.parse(localStorage.getItem('my_requests') || '[]');
+            myReqs.push(reqId);
+            localStorage.setItem('my_requests', JSON.stringify(myReqs));
+
+            // Instant UI Update
+            GLOBAL_REQUESTS.unshift({ id: reqId, name: name, semester: sem, subject: sub, message: msg, date: "Just Now", status: "Open" });
             document.getElementById('requestModal').classList.add('hidden');
             document.getElementById('reqMsg').value = '';
             renderBountyBoard(); 
 
-            // Send to Backend
             fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
         }
 
@@ -414,14 +529,17 @@
             if (GLOBAL_NOTES_DB.length === 0) return `<p class="text-gray-500 italic ml-2">No new notes recently...</p>`;
             const recent = GLOBAL_NOTES_DB.slice(0, 4);
             return recent.map(item => `
-                <div class="bg-white dark:bg-gray-800 min-w-[280px] p-5 rounded-2xl card-shadow border border-purple-50 dark:border-gray-700 snap-center shrink-0 flex flex-col justify-between group transition-all duration-300 select-none">
+                <div class="card-wrapper relative bg-white dark:bg-gray-800 min-w-[280px] p-5 rounded-2xl card-shadow border border-purple-50 dark:border-gray-700 snap-center shrink-0 flex flex-col justify-between group transition-all duration-300 select-none">
+                    
+                    ${getBookmarkHTML(item.id)}
+
                     <div>
-                        <div class="flex justify-between items-start mb-2">
+                        <div class="flex justify-between items-start mb-2 pr-10">
                             <span class="text-xs font-bold bg-green-100 text-green-700 px-2 py-1 rounded">New</span>
                             <span class="text-xs text-gray-500 dark:text-gray-400">Sem ${item.semester}</span>
                         </div>
-                        <h3 class="font-bold text-purple-800 dark:text-purple-300 line-clamp-2 break-all group-hover:line-clamp-none transition-all duration-300 cursor-default" title="${item.subject}">${item.subject}</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 break-all mb-3 group-hover:line-clamp-none transition-all duration-300 cursor-default" title="${item.title}">${item.title}</p>
+                        <h3 class="font-bold text-purple-800 dark:text-purple-300 line-clamp-2 break-all group-hover:line-clamp-none transition-all duration-300 cursor-default pr-10" title="${item.subject}">${item.subject}</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 break-all mb-3 group-hover:line-clamp-none transition-all duration-300 cursor-default pr-10" title="${item.title}">${item.title}</p>
                     </div>
                     <button onclick="openPDF('${item.file_url}')" class="w-full bg-purple-600 text-white py-2 rounded-lg text-sm font-semibold hover:bg-purple-700 transition mt-auto cursor-pointer">👀 View Fast</button>
                 </div>
@@ -480,8 +598,11 @@
                     const isUpvoted = localStorage.getItem('upvoted_' + item.id);
                     
                     html += `
-                        <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl card-shadow flex flex-col justify-between border border-purple-50 dark:border-gray-700 card-hover h-full group transition-all duration-300 select-none">
-                            <div class="flex justify-between items-start mb-3 gap-3">
+                        <div class="card-wrapper relative bg-white dark:bg-gray-800 p-5 rounded-2xl card-shadow flex flex-col justify-between border border-purple-50 dark:border-gray-700 card-hover h-full group transition-all duration-300 select-none">
+                            
+                            ${getBookmarkHTML(item.id)}
+
+                            <div class="flex justify-between items-start mb-3 gap-3 pr-10">
                                 <div class="flex-1 min-w-0">
                                     <h3 class="font-bold text-purple-800 dark:text-purple-300 text-lg leading-tight line-clamp-2 break-all group-hover:line-clamp-none transition-all duration-300 cursor-default" title="${item.title}">${item.title}</h3>
                                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2 break-all group-hover:line-clamp-none transition-all duration-300 cursor-default" title="Uploaded by: ${item.uploader}">Uploaded by: <b>${item.uploader}</b> • ${item.file_size || 'PDF'}</p>
@@ -534,6 +655,16 @@
             });
         });
 
+        // ✨ NEW: ABORT CONTROLLER TO CANCEL UPLOADS ✨
+        function cancelUpload(id) {
+            if(uploadControllers[id]) {
+                uploadControllers[id].abort();
+                delete uploadControllers[id];
+            }
+            const el = document.getElementById(`queue-item-${id}`);
+            if(el) el.remove();
+        }
+
         async function processUpload(file) {
             const id = new Date().getTime().toString() + Math.floor(Math.random() * 100);
             const sem = document.getElementById('upSem').value;
@@ -541,10 +672,15 @@
             const type = document.getElementById('upType').value;
             const uploader = document.getElementById('upName').value.trim() || 'Anonymous';
 
+            // Initialize abort controller
+            uploadControllers[id] = new AbortController();
+
             const queue = document.getElementById('uploadQueue');
             const item = document.createElement('div');
+            item.id = `queue-item-${id}`;
             item.className = 'bg-purple-50 dark:bg-gray-700 p-3 rounded-xl border border-purple-200 dark:border-gray-600';
-            item.innerHTML = `<div class="flex justify-between mb-1"><span class="font-semibold text-sm truncate w-40 text-purple-800 dark:text-white" title="${file.name}">${file.name}</span><span id="status-${id}" class="text-xs text-purple-600 font-bold">Uploading...</span></div><div class="w-full bg-purple-200 h-1.5 rounded-full overflow-hidden"><div id="bar-${id}" class="bg-purple-600 h-full w-0 progress-animate"></div></div>`;
+            // Added ❌ Cancel Button
+            item.innerHTML = `<div class="flex justify-between mb-1"><span class="font-semibold text-sm truncate w-32 text-purple-800 dark:text-white" title="${file.name}">${file.name}</span><div class="flex items-center gap-2"><span id="status-${id}" class="text-xs text-purple-600 font-bold">Uploading...</span><button onclick="cancelUpload('${id}')" class="text-red-500 hover:text-red-700 text-xs font-bold cursor-pointer" title="Cancel">❌</button></div></div><div class="w-full bg-purple-200 h-1.5 rounded-full overflow-hidden"><div id="bar-${id}" class="bg-purple-600 h-full w-0 progress-animate"></div></div>`;
             queue.appendChild(item);
 
             const reader = new FileReader();
@@ -558,7 +694,14 @@
                         size: (file.size / (1024*1024)).toFixed(2) + ' MB',
                         uploader: uploader, id: id, action: 'upload'
                     };
-                    const response = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                    
+                    // Pass the abort signal
+                    const response = await fetch(GOOGLE_SCRIPT_URL, { 
+                        method: 'POST', 
+                        body: JSON.stringify(payload),
+                        signal: uploadControllers[id].signal 
+                    });
+                    
                     const driveData = await response.json();
                     if (driveData.error) throw new Error(driveData.error);
                     
@@ -568,12 +711,19 @@
                     GLOBAL_NOTES_DB.unshift({ ...payload, created_at: new Date().toLocaleDateString(), file_url: driveData.url, upvotes: 0 });
                     setTimeout(() => item.remove(), 4000);
                 } catch (err) {
-                    document.getElementById(`status-${id}`).innerText = "❌ Failed";
-                    document.getElementById(`bar-${id}`).classList.replace('bg-purple-600', 'bg-red-500');
+                    if (err.name === 'AbortError') {
+                        console.log("Upload manually cancelled.");
+                    } else {
+                        document.getElementById(`status-${id}`).innerText = "❌ Failed";
+                        document.getElementById(`bar-${id}`).classList.replace('bg-purple-600', 'bg-red-500');
+                    }
                 }
             };
         }
-        function updateBar(id, val) { document.getElementById(`bar-${id}`).style.width = val + '%'; }
+        function updateBar(id, val) { 
+            const bar = document.getElementById(`bar-${id}`);
+            if(bar) bar.style.width = val + '%'; 
+        }
 
         init();
 
