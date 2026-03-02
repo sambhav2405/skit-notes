@@ -67,22 +67,22 @@
 
     <nav class="bg-[#f8f5ff] dark:bg-[#111827] border-b border-purple-200 dark:border-gray-700 px-4 sm:px-6 py-4 flex justify-between items-center sticky top-0 z-50 transition-colors">
         <h1 class="text-xl sm:text-2xl font-bold text-purple-700 cursor-pointer" onclick="navigateTo('years')">Notes</h1>
-        <div class="flex gap-2 sm:gap-4 font-medium items-center">
-            
-            <button onclick="toggleDarkMode()" class="text-xl p-2 rounded-full hover:bg-purple-100 dark:hover:bg-gray-700 transition cursor-pointer" id="themeToggle">🌙</button>
+       <div class="flex gap-2 sm:gap-4 font-medium items-center">
+    
+    <button onclick="toggleDarkMode()" class="text-xl p-2 rounded-full hover:bg-purple-100 dark:hover:bg-gray-700 transition cursor-pointer" id="themeToggle">🌙</button>
 
-            <button onclick="navigateTo('library')" class="hover:bg-yellow-100 dark:hover:bg-yellow-900 transition flex items-center gap-1 bg-yellow-50 dark:bg-gray-700 text-yellow-600 dark:text-yellow-400 px-3 py-1.5 rounded-full border border-yellow-200 dark:border-gray-600 cursor-pointer font-bold shadow-sm">
-                <span class="hidden sm:block">Library</span>
-                <span>⭐</span>
-            </button>
+    <button onclick="shareApp()" class="hover:bg-blue-100 dark:hover:bg-blue-900 transition flex items-center gap-1 bg-blue-50 dark:bg-gray-700 text-blue-600 dark:text-blue-400 px-3 py-1.5 rounded-full border border-blue-200 dark:border-gray-600 cursor-pointer font-bold shadow-sm">
+        <span class="hidden sm:block">Share</span>
+        <span>🔗</span>
+    </button>
 
-            <button onclick="navigateTo('bounty')" class="hover:bg-orange-100 dark:hover:bg-orange-900 transition flex items-center gap-1 bg-orange-50 dark:bg-gray-700 text-orange-600 dark:text-orange-400 px-3 py-1.5 rounded-full border border-orange-200 dark:border-gray-600 cursor-pointer font-bold shadow-sm">
-                <span class="hidden sm:block">Requests</span>
-                <span>🎯</span>
-            </button>
+    <button onclick="navigateTo('library')" class="hover:bg-yellow-100 dark:hover:bg-yellow-900 transition flex items-center gap-1 bg-yellow-50 dark:bg-gray-700 text-yellow-600 dark:text-yellow-400 px-3 py-1.5 rounded-full border border-yellow-200 dark:border-gray-600 cursor-pointer font-bold shadow-sm">
+        <span class="hidden sm:block">Library</span>
+        <span>⭐</span>
+    </button>
 
-            <button onclick="toggleUpload()" class="hover:bg-purple-200 transition bg-purple-100 dark:bg-purple-900 dark:text-white text-purple-800 px-4 py-1.5 rounded-full cursor-pointer font-bold">Upload</button>
-        </div>
+    <button onclick="toggleUpload()" class="hover:bg-purple-200 transition bg-purple-100 dark:bg-purple-900 dark:text-white text-purple-800 px-4 py-1.5 rounded-full cursor-pointer font-bold">Upload</button>
+</div>
     </nav>
 
     <div class="container mx-auto px-4 mt-8 max-w-2xl hidden" id="searchContainer">
@@ -734,6 +734,25 @@
                 }).catch(err => console.log('Service Worker registration failed', err));
             });
         }
+        function shareApp() {
+    const shareData = {
+        title: 'Notes Hub 📚',
+        text: `*Exams की टेंशन खत्म!* 🚀\n\nमैंने *Notes Hub* पर अपने काम के सारे Notes और Previous Year Papers ढूंढ लिए हैं। तुम भी चेक करो, यहाँ सब कुछ Organized है!\n\nचलो साथ में पढ़ते हैं: 👇`,
+        url: window.location.origin // आपकी साइट का लिंक यहाँ अपने आप आ जाएगा
+    };
+
+    if (navigator.share) {
+        navigator.share(shareData)
+            .then(() => console.log('Successful share'))
+            .catch((error) => console.log('Error sharing', error));
+    } else {
+        // अगर ब्राउज़र Share API सपोर्ट नहीं करता (जैसे पुराने Desktop Chrome)
+        const dummyText = `${shareData.text}\n${shareData.url}`;
+        navigator.clipboard.writeText(dummyText);
+        alert("✅ धांसू मैसेज और लिंक कॉपी हो गया है! अब WhatsApp पर पेस्ट कर दो।");
+    }
+}
     </script>
 </body>
 </html>
+
