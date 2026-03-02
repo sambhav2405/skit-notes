@@ -734,25 +734,24 @@
                 }).catch(err => console.log('Service Worker registration failed', err));
             });
         }
-        function shareApp() {
+       function shareApp() {
     const shareData = {
-        title: 'Notes Hub 📚',
-        text: `*Exams की टेंशन खत्म!* 🚀\n\nमैंने *Notes Hub* पर अपने काम के सारे Notes और Previous Year Papers ढूंढ लिए हैं। तुम भी चेक करो, यहाँ सब कुछ Organized है!\n\nचलो साथ में पढ़ते हैं: 👇`,
-        url: window.location.origin // आपकी साइट का लिंक यहाँ अपने आप आ जाएगा
+        title: 'Notes Hub - Collaborative Learning 📚',
+        text: `*Notes Hub: बेहतर पढ़ाई, अब सबके साथ!* 🚀\n\nनमस्ते! मैंने *Notes Hub* पर अपनी पढ़ाई के लिए बेहतरीन नोट्स देखे हैं। यहाँ आप न केवल नोट्स पढ़ सकते हैं, बल्कि अपने नोट्स भी अपलोड करके दूसरों की मदद कर सकते हैं।\n\nआइए, मिलकर अपनी पढ़ाई को और भी आसान और व्यवस्थित बनाते हैं! यहाँ देखें: 👇`,
+        url: window.location.origin 
     };
 
     if (navigator.share) {
         navigator.share(shareData)
-            .then(() => console.log('Successful share'))
             .catch((error) => console.log('Error sharing', error));
     } else {
-        // अगर ब्राउज़र Share API सपोर्ट नहीं करता (जैसे पुराने Desktop Chrome)
         const dummyText = `${shareData.text}\n${shareData.url}`;
         navigator.clipboard.writeText(dummyText);
-        alert("✅ धांसू मैसेज और लिंक कॉपी हो गया है! अब WhatsApp पर पेस्ट कर दो।");
+        alert("✅ प्रोफेशनल मैसेज और लिंक कॉपी हो गया है!");
     }
 }
     </script>
 </body>
 </html>
+
 
