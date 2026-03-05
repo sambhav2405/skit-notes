@@ -110,7 +110,14 @@
                 <input type="text" id="reqName" placeholder="Your Name" class="w-full border border-orange-200 p-3 rounded-xl outline-none bg-orange-50 dark:bg-gray-700 dark:text-white cursor-text text-sm dark:border-gray-600">
                 <div class="grid grid-cols-2 gap-4">
                     <select id="reqSem" onchange="updateReqSubjects()" class="w-full border border-orange-200 p-3 rounded-xl outline-none bg-orange-50 dark:bg-gray-700 dark:text-white cursor-pointer text-sm dark:border-gray-600">
-                        <option value="1">1st Sem</option><option value="2">2nd Sem</option><option value="3">3rd Sem</option><option value="4" selected>4th Sem</option>
+                        <option value="1">1st Sem</option>
+                        <option value="2">2nd Sem</option>
+                        <option value="3">3rd Sem</option>
+                        <option value="4" selected>4th Sem</option>
+                        <option value="5">5th Sem</option>
+                        <option value="6">6th Sem</option>
+                        <option value="7">7th Sem</option>
+                        <option value="8">8th Sem</option>
                     </select>
                     <select id="reqSub" class="w-full border border-orange-200 p-3 rounded-xl outline-none bg-orange-50 dark:bg-gray-700 dark:text-white cursor-pointer text-sm dark:border-gray-600"></select>
                 </div>
@@ -145,7 +152,14 @@
                     <div>
                         <label class="text-sm font-semibold text-purple-700 dark:text-purple-300">Semester</label>
                         <select id="upSem" onchange="updateUploadSubjects()" class="w-full border border-purple-200 p-3 rounded-xl mt-1 outline-none bg-purple-50 dark:bg-gray-700 dark:text-white cursor-pointer">
-                            <option value="1">1st Sem</option><option value="2">2nd Sem</option><option value="3">3rd Sem</option><option value="4" selected>4th Sem</option>
+                            <option value="1">1st Sem</option>
+                            <option value="2">2nd Sem</option>
+                            <option value="3">3rd Sem</option>
+                            <option value="4" selected>4th Sem</option>
+                            <option value="5">5th Sem</option>
+                            <option value="6">6th Sem</option>
+                            <option value="7">7th Sem</option>
+                            <option value="8">8th Sem</option>
                         </select>
                     </div>
                     <div>
@@ -193,8 +207,14 @@
                 "Semester 3": ["Managerial Economics", "Technical Communication", "Stats & Prob", "DSA", "Operating System", "Software Engineering", "Digital Electronics"],
                 "Semester 4": ["MEFA", "Discrete Maths", "DBMS", "Theory of Computation", "Computer Networks", "Artificial Intelligence", "Computer Architecture"]
             },
-            "Third Year": { "Semester 5": ["Coming Soon"], "Semester 6": ["Coming Soon"] },
-            "Fourth Year": { "Semester 7": ["Coming Soon"], "Semester 8": ["Coming Soon"] }
+            "Third Year": { 
+                "Semester 5": ["Information Theory & Coding", "Compiler Design", "Operating System", "Computer Graphics & Multimedia", "Analysis of Algorithms", "Machine Learning"], 
+                "Semester 6": ["Digital Image Processing", "Natural Language Processing", "Information Security System", "Artificial Neural Networks", "Cloud Computing", "Distributed System"] 
+            },
+            "Fourth Year": { 
+                "Semester 7": ["Deep Learning", "Internet of Things", "Big Data Analytics", "Cyber Security"], 
+                "Semester 8": ["Project", "Seminar"] 
+            }
         };
 
         const appDiv = document.getElementById('app');
@@ -424,7 +444,7 @@
 
         function updateReqSubjects() {
             const sem = document.getElementById('reqSem').value;
-            const yearMapping = { "1": "First Year", "2": "First Year", "3": "Second Year", "4": "Second Year" };
+            const yearMapping = { "1": "First Year", "2": "First Year", "3": "Second Year", "4": "Second Year", "5": "Third Year", "6": "Third Year", "7": "Fourth Year", "8": "Fourth Year" };
             const year = yearMapping[sem];
             document.getElementById('reqSub').innerHTML = dataTree[year]["Semester " + sem].map(s => `<option value="${s}">${s}</option>`).join('');
         }
@@ -647,7 +667,7 @@
         function toggleUpload() { document.getElementById('uploadModal').classList.toggle('hidden'); updateUploadSubjects(); }
         function updateUploadSubjects() {
             const sem = document.getElementById('upSem').value;
-            const yearMapping = { "1": "First Year", "2": "First Year", "3": "Second Year", "4": "Second Year" };
+            const yearMapping = { "1": "First Year", "2": "First Year", "3": "Second Year", "4": "Second Year", "5": "Third Year", "6": "Third Year", "7": "Fourth Year", "8": "Fourth Year" };
             const year = yearMapping[sem];
             document.getElementById('upSub').innerHTML = dataTree[year]["Semester " + sem].map(s => `<option value="${s}">${s}</option>`).join('');
         }
@@ -756,6 +776,3 @@
     </script>
 </body>
 </html>
-
-
-
