@@ -3,776 +3,1193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes Hub</title>
+    <title>Notes Hub – SKIT Engineering Resources</title>
+    <meta name="description" content="Best notes and previous year papers for SKIT engineering students. Upload, share, and find study material easily.">
     <meta name="theme-color" content="#7e22ce">
+    <meta property="og:title" content="Notes Hub – SKIT Engineering Resources">
+    <meta property="og:description" content="Read & Share Engineering Notes, Question Papers for SKIT students">
+    <meta property="og:type" content="website">
     <link rel="apple-touch-icon" href="logo.png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = { darkMode: 'class' }
-    </script>
     <link rel="manifest" href="manifest.json">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        body { 
-            font-family: 'Poppins', sans-serif; 
+        /* ─── BASE ─────────────────────────────────────────── */
+        body {
+            font-family: 'Poppins', sans-serif;
             transition: background-color 0.3s, color 0.3s;
-            -webkit-user-select: none; 
-            -ms-user-select: none; 
-            user-select: none; 
-            overscroll-behavior-y: contain; 
-            cursor: default; 
-        } 
-        input, select, textarea {
-            -webkit-user-select: text;
-            -ms-user-select: text;
-            user-select: text;
-            cursor: text;
+            -webkit-user-select: none; -ms-user-select: none; user-select: none;
+            overscroll-behavior-y: contain; cursor: default;
         }
+        input, select, textarea { -webkit-user-select: text; -ms-user-select: text; user-select: text; cursor: text; }
 
-        .card-shadow { box-shadow: 0 4px 6px -1px rgba(107, 33, 168, 0.1), 0 2px 4px -1px rgba(107, 33, 168, 0.06); }
-        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(107, 33, 168, 0.15); }
-        .progress-animate { transition: width 0.4s ease; }
-        
+        /* ─── SCROLLBAR ─────────────────────────────────────── */
         ::-webkit-scrollbar { display: none; }
         * { -ms-overflow-style: none; scrollbar-width: none; }
 
-        .dark body { background-color: #0f172a; color: #f8fafc; } 
-        .dark nav { background-color: #0f172a !important; border-bottom-color: #1e293b !important; }
-        .dark .bg-white { background-color: #1e293b !important; border-color: #334155 !important; } 
-        .dark .text-purple-800 { color: #f8fafc !important; } 
-        .dark h1.text-purple-700 { color: #a855f7 !important; } 
-        .dark .text-purple-700 { color: #c4b5fd !important; } 
-        .dark .text-purple-600 { color: #a78bfa !important; }
-        .dark .text-slate-800 { color: #f8fafc !important; }
-        .dark .text-gray-500, .dark .text-gray-600, .dark .text-gray-400 { color: #94a3b8 !important; } 
-        .dark .bg-purple-50 { background-color: #334155 !important; color: #f8fafc !important; }
-        .dark input, .dark select, .dark textarea { background-color: #0f172a !important; border-color: #334155 !important; color: #f8fafc !important; }
-        .dark .border-purple-200, .dark .border-purple-50, .dark .border-purple-100 { border-color: #334155 !important; }
-        .dark .border-purple-300 { border-color: #475569 !important; }
-        .dark .hover\:border-purple-500:hover { border-color: #a855f7 !important; }
-        .dark .bg-purple-100 { background-color: #334155 !important; color: #c4b5fd !important; } 
-        .dark .hover\:bg-purple-200:hover { background-color: #475569 !important; }
-        .dark .bg-gray-100 { background-color: #334155 !important; color: #f8fafc !important; } 
-        .dark .hover\:bg-gray-200:hover { background-color: #475569 !important; }
-        .dark .bg-green-100 { background-color: rgba(16, 185, 129, 0.15) !important; color: #34d399 !important; border: 1px solid rgba(16,185,129,0.3); } 
-        .dark .text-green-700 { color: #34d399 !important; }
-        .dark .bg-yellow-50 { background-color: rgba(234, 179, 8, 0.1) !important; border-color: #ca8a04 !important; } 
-        .dark .text-yellow-800 { color: #fde047 !important; }
-        .dark .card-shadow { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important; }
-        .dark .card-hover:hover { box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6) !important; border-color: #475569 !important; }
-        .dark #uploadModal > div, .dark #requestModal > div { background-color: #1e293b !important; border: 1px solid #334155; }
+        /* ─── CARDS ─────────────────────────────────────────── */
+        .card-shadow  { box-shadow: 0 4px 6px -1px rgba(107,33,168,.1), 0 2px 4px -1px rgba(107,33,168,.06); }
+        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(107,33,168,.15); }
+        .progress-animate { transition: width 0.4s ease; }
+
+        /* ─── DARK MODE OVERRIDES ─────────────────────────── */
+        .dark body                                      { background-color: #0f172a; color: #f8fafc; }
+        .dark nav                                       { background-color: #0f172a !important; border-bottom-color: #1e293b !important; }
+        .dark .bg-white                                 { background-color: #1e293b !important; border-color: #334155 !important; }
+        .dark .text-purple-800                          { color: #f8fafc !important; }
+        .dark h1.text-purple-700                        { color: #a855f7 !important; }
+        .dark .text-purple-700                          { color: #c4b5fd !important; }
+        .dark .text-purple-600                          { color: #a78bfa !important; }
+        .dark .text-slate-800                           { color: #f8fafc !important; }
+        .dark .text-gray-500,.dark .text-gray-600,.dark .text-gray-400 { color: #94a3b8 !important; }
+        .dark .bg-purple-50                             { background-color: #334155 !important; color: #f8fafc !important; }
+        .dark input,.dark select,.dark textarea         { background-color: #0f172a !important; border-color: #334155 !important; color: #f8fafc !important; }
+        .dark .border-purple-200,.dark .border-purple-50,.dark .border-purple-100 { border-color: #334155 !important; }
+        .dark .border-purple-300                        { border-color: #475569 !important; }
+        .dark .hover\:border-purple-500:hover           { border-color: #a855f7 !important; }
+        .dark .bg-purple-100                            { background-color: #334155 !important; color: #c4b5fd !important; }
+        .dark .hover\:bg-purple-200:hover               { background-color: #475569 !important; }
+        .dark .bg-gray-100                              { background-color: #334155 !important; color: #f8fafc !important; }
+        .dark .hover\:bg-gray-200:hover                 { background-color: #475569 !important; }
+        .dark .bg-green-100                             { background-color: rgba(16,185,129,.15) !important; color: #34d399 !important; border: 1px solid rgba(16,185,129,.3); }
+        .dark .text-green-700                           { color: #34d399 !important; }
+        .dark .bg-yellow-50                             { background-color: rgba(234,179,8,.1) !important; border-color: #ca8a04 !important; }
+        .dark .text-yellow-800                          { color: #fde047 !important; }
+        .dark .card-shadow                              { box-shadow: 0 4px 15px rgba(0,0,0,.4) !important; }
+        .dark .card-hover:hover                         { box-shadow: 0 10px 25px rgba(0,0,0,.6) !important; border-color: #475569 !important; }
+        .dark #uploadModal > div,.dark #requestModal > div { background-color: #1e293b !important; border: 1px solid #334155; }
+
+        /* ─── TOAST NOTIFICATION ─────────────────────────── */
+        #toast {
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+            background: #1e293b; color: #fff; padding: 12px 24px; border-radius: 999px;
+            font-size: 14px; font-weight: 600; z-index: 9999;
+            box-shadow: 0 8px 24px rgba(0,0,0,.3);
+            transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), opacity 0.3s;
+            opacity: 0; pointer-events: none; white-space: nowrap;
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        /* ─── FILE DRAG ACTIVE ─────────────────────────── */
+        .drag-active { border-color: #7e22ce !important; background-color: rgba(126,34,206,.08) !important; }
+
+        /* ─── UPLOAD MODAL SCROLL FIX ─────────────────── */
+        #uploadModal > div { max-height: 90vh; overflow-y: auto; }
+
+        /* ─── SPINNER ─────────────────────────────────── */
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
+
+        /* ─── BADGE PULSE ─────────────────────────────── */
+        @keyframes badge-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+        .badge-pulse { animation: badge-pulse 2s ease-in-out infinite; }
+
+        /* ─── PDF MODAL CLOSE BUTTON ─────────────────── */
+        #pdfModal { display: none; }
+        #pdfModal.open { display: flex; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col bg-[#f8f5ff] text-slate-800">
 
-    <nav class="bg-[#f8f5ff] dark:bg-[#111827] border-b border-purple-200 dark:border-gray-700 px-4 sm:px-6 py-4 flex justify-between items-center sticky top-0 z-50 transition-colors">
-        <h1 class="text-xl sm:text-2xl font-bold text-purple-700 cursor-pointer" onclick="navigateTo('years')">Notes</h1>
-       <div class="flex gap-2 sm:gap-4 font-medium items-center">
-    
-    <button onclick="toggleDarkMode()" class="text-xl p-2 rounded-full hover:bg-purple-100 dark:hover:bg-gray-700 transition cursor-pointer" id="themeToggle">🌙</button>
+<!-- ═══════════════════ TOAST ═══════════════════ -->
+<div id="toast"></div>
 
-    <button onclick="shareApp()" class="hover:bg-blue-100 dark:hover:bg-blue-900 transition flex items-center gap-1 bg-blue-50 dark:bg-gray-700 text-blue-600 dark:text-blue-400 px-3 py-1.5 rounded-full border border-blue-200 dark:border-gray-600 cursor-pointer font-bold shadow-sm">
-        <span class="hidden sm:block">Share</span>
-        <span>🔗</span>
-    </button>
+<!-- ═══════════════════ NAV ════════════════════ -->
+<nav class="bg-[#f8f5ff] dark:bg-[#111827] border-b border-purple-200 dark:border-gray-700 px-4 sm:px-6 py-4 flex justify-between items-center sticky top-0 z-50 transition-colors">
+    <h1 class="text-xl sm:text-2xl font-bold text-purple-700 cursor-pointer select-none" onclick="navigateTo('years')">📚 Notes</h1>
+    <div class="flex gap-2 sm:gap-3 font-medium items-center">
+        <button onclick="toggleDarkMode()" id="themeToggle" title="Toggle Theme"
+            class="text-xl p-2 rounded-full hover:bg-purple-100 dark:hover:bg-gray-700 transition cursor-pointer">🌙</button>
 
-    <button onclick="navigateTo('library')" class="hover:bg-yellow-100 dark:hover:bg-yellow-900 transition flex items-center gap-1 bg-yellow-50 dark:bg-gray-700 text-yellow-600 dark:text-yellow-400 px-3 py-1.5 rounded-full border border-yellow-200 dark:border-gray-600 cursor-pointer font-bold shadow-sm">
-        <span class="hidden sm:block">Library</span>
-        <span>⭐</span>
-    </button>
- <button onclick="navigateTo('bounty')" class="hover:bg-orange-100 dark:hover:bg-orange-900 transition flex items-center gap-1 bg-orange-50 dark:bg-gray-700 text-orange-600 dark:text-orange-400 px-3 py-1.5 rounded-full border border-orange-200 dark:border-gray-600 cursor-pointer font-bold shadow-sm">
-                <span class="hidden sm:block">Requests</span>
-                <span>🎯</span>
-            </button>
-    <button onclick="toggleUpload()" class="hover:bg-purple-200 transition bg-purple-100 dark:bg-purple-900 dark:text-white text-purple-800 px-4 py-1.5 rounded-full cursor-pointer font-bold">Upload</button>
+        <button onclick="shareApp()" title="Share"
+            class="hover:bg-blue-100 dark:hover:bg-blue-900 transition flex items-center gap-1 bg-blue-50 dark:bg-gray-700 text-blue-600 dark:text-blue-400 px-3 py-1.5 rounded-full border border-blue-200 dark:border-gray-600 cursor-pointer font-bold shadow-sm">
+            <span class="hidden sm:block">Share</span><span>🔗</span>
+        </button>
+
+        <button onclick="navigateTo('library')" title="My Library"
+            class="hover:bg-yellow-100 dark:hover:bg-yellow-900 transition flex items-center gap-1 bg-yellow-50 dark:bg-gray-700 text-yellow-600 dark:text-yellow-400 px-3 py-1.5 rounded-full border border-yellow-200 dark:border-gray-600 cursor-pointer font-bold shadow-sm">
+            <span class="hidden sm:block">Library</span><span>⭐</span>
+        </button>
+
+        <button onclick="navigateTo('bounty')" title="Note Requests"
+            class="hover:bg-orange-100 dark:hover:bg-orange-900 transition flex items-center gap-1 bg-orange-50 dark:bg-gray-700 text-orange-600 dark:text-orange-400 px-3 py-1.5 rounded-full border border-orange-200 dark:border-gray-600 cursor-pointer font-bold shadow-sm">
+            <span class="hidden sm:block">Requests</span><span>🎯</span>
+        </button>
+
+        <button onclick="toggleUpload()" title="Upload Notes"
+            class="hover:bg-purple-200 transition bg-purple-600 text-white px-4 py-1.5 rounded-full cursor-pointer font-bold shadow-sm">
+            ⬆️ <span class="hidden sm:inline">Upload</span>
+        </button>
+    </div>
+</nav>
+
+<!-- ═══════════════════ SEARCH BAR ════════════════ -->
+<div class="container mx-auto px-4 mt-8 max-w-2xl hidden" id="searchContainer">
+    <div class="relative">
+        <input type="text" id="searchInput" oninput="handleSearch()"
+            placeholder="Search subjects instantly (e.g. DBMS, Physics)..."
+            class="w-full bg-white dark:bg-gray-800 border-2 border-purple-200 dark:border-gray-600 text-lg rounded-2xl py-4 px-6 pl-12 shadow-sm focus:outline-none focus:border-purple-500 dark:focus:border-purple-400 dark:text-white transition-colors cursor-text">
+        <span class="absolute left-4 top-4 text-2xl pointer-events-none">🔍</span>
+        <button id="searchClearBtn" onclick="clearSearch()" class="absolute right-4 top-4 text-gray-400 hover:text-red-500 text-xl hidden cursor-pointer">✕</button>
+    </div>
+    <div id="searchResults" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
 </div>
-    </nav>
 
-    <div class="container mx-auto px-4 mt-8 max-w-2xl hidden" id="searchContainer">
-        <div class="relative">
-            <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="Search subjects instantly (e.g. DBMS, Physics)..." class="w-full bg-white dark:bg-gray-800 border-2 border-purple-200 dark:border-gray-600 text-lg rounded-2xl py-4 px-6 pl-12 shadow-sm focus:outline-none focus:border-purple-500 dark:focus:border-purple-400 dark:text-white transition-colors cursor-text">
-            <span class="absolute left-4 top-4 text-2xl">🔍</span>
-        </div>
-        <div id="searchResults" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+<!-- ═══════════════════ MAIN ════════════════════ -->
+<main class="flex-grow container mx-auto px-4 py-6 max-w-5xl" id="app">
+    <div class="text-center py-20">
+        <div class="spinner mx-auto mb-4" style="width:36px;height:36px;border-color:rgba(126,34,206,.3);border-top-color:#7e22ce;"></div>
+        <p class="text-xl text-purple-700 font-semibold">Loading Notes Hub... 🚀</p>
     </div>
+</main>
 
-    <main class="flex-grow container mx-auto px-4 py-6 max-w-5xl" id="app">
-        <div class="text-center py-20"><p class="text-xl animate-pulse">Loading amazing notes... 🚀</p></div>
-    </main>
-
-    <div id="requestModal" class="fixed inset-0 bg-black/70 z-50 hidden flex justify-center items-center backdrop-blur-sm">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md w-full shadow-2xl mx-4">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-orange-600 dark:text-orange-400">Ask for Notes 🙋‍♂️</h2>
-                <button onclick="document.getElementById('requestModal').classList.add('hidden')" class="text-slate-400 hover:text-red-500 text-3xl font-bold cursor-pointer">&times;</button>
+<!-- ═══════════════════ REQUEST MODAL ══════════════ -->
+<div id="requestModal" class="fixed inset-0 bg-black/70 z-50 hidden items-center justify-center backdrop-blur-sm" style="display:none;">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md w-full shadow-2xl mx-4">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-orange-600 dark:text-orange-400">Ask for Notes 🙋‍♂️</h2>
+            <button onclick="closeModal('requestModal')" class="text-slate-400 hover:text-red-500 text-3xl font-bold cursor-pointer leading-none">&times;</button>
+        </div>
+        <div class="space-y-4">
+            <input type="text" id="reqName" placeholder="Your Name" maxlength="60"
+                class="w-full border border-orange-200 p-3 rounded-xl outline-none bg-orange-50 dark:bg-gray-700 dark:text-white cursor-text text-sm dark:border-gray-600">
+            <div class="grid grid-cols-2 gap-4">
+                <select id="reqSem" onchange="updateReqSubjects()"
+                    class="w-full border border-orange-200 p-3 rounded-xl outline-none bg-orange-50 dark:bg-gray-700 dark:text-white cursor-pointer text-sm dark:border-gray-600">
+                    <option value="1">1st Sem</option><option value="2">2nd Sem</option>
+                    <option value="3">3rd Sem</option><option value="4" selected>4th Sem</option>
+                    <option value="5">5th Sem</option><option value="6">6th Sem</option>
+                    <option value="7">7th Sem</option><option value="8">8th Sem</option>
+                </select>
+                <select id="reqSub"
+                    class="w-full border border-orange-200 p-3 rounded-xl outline-none bg-orange-50 dark:bg-gray-700 dark:text-white cursor-pointer text-sm dark:border-gray-600"></select>
             </div>
-            <div class="space-y-4">
-                <input type="text" id="reqName" placeholder="Your Name" class="w-full border border-orange-200 p-3 rounded-xl outline-none bg-orange-50 dark:bg-gray-700 dark:text-white cursor-text text-sm dark:border-gray-600">
-                <div class="grid grid-cols-2 gap-4">
-                    <select id="reqSem" onchange="updateReqSubjects()" class="w-full border border-orange-200 p-3 rounded-xl outline-none bg-orange-50 dark:bg-gray-700 dark:text-white cursor-pointer text-sm dark:border-gray-600">
-                        <option value="1">1st Sem</option>
-                        <option value="2">2nd Sem</option>
-                        <option value="3">3rd Sem</option>
-                        <option value="4" selected>4th Sem</option>
-                        <option value="5">5th Sem</option>
-                        <option value="6">6th Sem</option>
-                        <option value="7">7th Sem</option>
-                        <option value="8">8th Sem</option>
+            <textarea id="reqMsg" rows="3" maxlength="300"
+                placeholder="What exactly do you need? (e.g., Unit 4 handwritten notes for Mid-terms)"
+                class="w-full border border-orange-200 p-3 rounded-xl outline-none bg-orange-50 dark:bg-gray-700 dark:text-white cursor-text text-sm dark:border-gray-600 resize-none"></textarea>
+            <button onclick="submitRequestForm()" id="reqSubmitBtn"
+                class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl shadow-lg transition cursor-pointer flex items-center justify-center gap-2">
+                Post Request 🚀
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════ UPLOAD MODAL ══════════════ -->
+<div id="uploadModal" class="fixed inset-0 bg-black/70 z-50 hidden items-center justify-center backdrop-blur-sm" style="display:none;">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-lg w-full shadow-2xl mx-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-purple-700 dark:text-purple-300">Upload Center 📤</h2>
+            <button onclick="closeModal('uploadModal')" class="text-slate-400 hover:text-red-500 text-3xl font-bold cursor-pointer leading-none">&times;</button>
+        </div>
+
+        <!-- File size warning -->
+        <div class="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-xl p-3 mb-4 text-xs text-blue-700 dark:text-blue-300">
+            ℹ️ Only PDF files accepted. Maximum file size: <b>100 MB</b> per file. Large files upload in chunks automatically.
+        </div>
+
+        <div class="space-y-4 mb-4">
+            <div>
+                <label class="text-sm font-semibold text-purple-700 dark:text-purple-300">Your Name (Credit keliye)</label>
+                <input type="text" id="upName" placeholder="e.g. Sambhav Jain (IT)" maxlength="60"
+                    class="w-full border border-purple-200 p-3 rounded-xl mt-1 outline-none bg-purple-50 dark:bg-gray-700 dark:text-white cursor-text">
+                <p class="text-xs text-purple-500 mt-1 italic">Add your branch to avoid mixing with others!</p>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="col-span-2">
+                    <label class="text-sm font-semibold text-purple-700 dark:text-purple-300">Material Type</label>
+                    <select id="upType" class="w-full border border-purple-200 p-3 rounded-xl mt-1 outline-none bg-purple-50 dark:bg-gray-700 dark:text-white cursor-pointer">
+                        <option value="Notes">Study Notes</option>
+                        <option value="Question Paper">Question Paper</option>
                     </select>
-                    <select id="reqSub" class="w-full border border-orange-200 p-3 rounded-xl outline-none bg-orange-50 dark:bg-gray-700 dark:text-white cursor-pointer text-sm dark:border-gray-600"></select>
                 </div>
-                <textarea id="reqMsg" rows="3" placeholder="What exactly do you need? (e.g., Unit 4 handwritten notes for Mid-terms)" class="w-full border border-orange-200 p-3 rounded-xl outline-none bg-orange-50 dark:bg-gray-700 dark:text-white cursor-text text-sm dark:border-gray-600"></textarea>
-                <button onclick="submitRequestForm()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl shadow-lg transition cursor-pointer">Post Request 🚀</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="uploadModal" class="fixed inset-0 bg-black/70 z-50 hidden flex justify-center items-center backdrop-blur-sm">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-lg w-full shadow-2xl mx-4 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-purple-700 dark:text-purple-300">Upload Center</h2>
-                <button onclick="toggleUpload()" class="text-slate-400 hover:text-red-500 text-3xl font-bold cursor-pointer">&times;</button>
-            </div>
-            
-            <div class="space-y-4 mb-4">
                 <div>
-                    <label class="text-sm font-semibold text-purple-700 dark:text-purple-300">Your Name (Credit keliye)</label>
-                    <input type="text" id="upName" placeholder="e.g. Sambhav Jain (IT)" class="w-full border border-purple-200 p-3 rounded-xl mt-1 outline-none bg-purple-50 dark:bg-gray-700 dark:text-white cursor-text">
-                    <p class="text-xs text-purple-500 mt-1 italic">Add your surname or branch to avoid mixing points with others!</p>
+                    <label class="text-sm font-semibold text-purple-700 dark:text-purple-300">Semester</label>
+                    <select id="upSem" onchange="updateUploadSubjects()"
+                        class="w-full border border-purple-200 p-3 rounded-xl mt-1 outline-none bg-purple-50 dark:bg-gray-700 dark:text-white cursor-pointer">
+                        <option value="1">1st Sem</option><option value="2">2nd Sem</option>
+                        <option value="3">3rd Sem</option><option value="4" selected>4th Sem</option>
+                        <option value="5">5th Sem</option><option value="6">6th Sem</option>
+                        <option value="7">7th Sem</option><option value="8">8th Sem</option>
+                    </select>
                 </div>
-                
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="col-span-2">
-                        <label class="text-sm font-semibold text-purple-700 dark:text-purple-300">Material Type</label>
-                        <select id="upType" class="w-full border border-purple-200 p-3 rounded-xl mt-1 outline-none bg-purple-50 dark:bg-gray-700 dark:text-white cursor-pointer">
-                            <option value="Notes">Study Notes</option>
-                            <option value="Question Paper">Question Paper</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-sm font-semibold text-purple-700 dark:text-purple-300">Semester</label>
-                        <select id="upSem" onchange="updateUploadSubjects()" class="w-full border border-purple-200 p-3 rounded-xl mt-1 outline-none bg-purple-50 dark:bg-gray-700 dark:text-white cursor-pointer">
-                            <option value="1">1st Sem</option>
-                            <option value="2">2nd Sem</option>
-                            <option value="3">3rd Sem</option>
-                            <option value="4" selected>4th Sem</option>
-                            <option value="5">5th Sem</option>
-                            <option value="6">6th Sem</option>
-                            <option value="7">7th Sem</option>
-                            <option value="8">8th Sem</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-sm font-semibold text-purple-700 dark:text-purple-300">Subject</label>
-                        <select id="upSub" class="w-full border border-purple-200 p-3 rounded-xl mt-1 outline-none bg-purple-50 dark:bg-gray-700 dark:text-white cursor-pointer"></select>
-                    </div>
+                <div>
+                    <label class="text-sm font-semibold text-purple-700 dark:text-purple-300">Subject</label>
+                    <select id="upSub" class="w-full border border-purple-200 p-3 rounded-xl mt-1 outline-none bg-purple-50 dark:bg-gray-700 dark:text-white cursor-pointer"></select>
                 </div>
             </div>
-
-            <div class="relative border-2 border-dashed border-purple-300 rounded-2xl p-8 text-center hover:border-purple-500 transition-colors bg-purple-50/50 mt-4 cursor-pointer">
-                <input type="file" id="fileInput" multiple accept=".pdf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
-                <div class="text-purple-500 text-4xl mb-2">📁</div>
-                <p class="font-bold text-purple-800 dark:text-purple-200">Select PDF Files</p>
-                <p class="text-xs text-purple-600 mt-1">Earn credits by uploading!</p>
-            </div>
-            <div id="uploadQueue" class="mt-6 space-y-3"></div>
         </div>
+
+        <!-- Drop Zone -->
+        <div id="dropZone"
+            class="relative border-2 border-dashed border-purple-300 rounded-2xl p-8 text-center hover:border-purple-500 transition-colors bg-purple-50/50 mt-4 cursor-pointer"
+            ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+            <input type="file" id="fileInput" multiple accept=".pdf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" onchange="handleFileSelect(event)">
+            <div class="text-purple-500 text-4xl mb-2 pointer-events-none">📁</div>
+            <p class="font-bold text-purple-800 dark:text-purple-200 pointer-events-none">Click or Drag & Drop PDF Files</p>
+            <p class="text-xs text-purple-600 mt-1 pointer-events-none">Earn credits by uploading! Max 10MB per file.</p>
+        </div>
+        <div id="uploadQueue" class="mt-6 space-y-3"></div>
     </div>
+</div>
 
-    <div id="pdfModal" class="fixed inset-0 bg-black/95 z-[100] hidden flex-col backdrop-blur-sm">
-        <div class="p-4 flex justify-between items-center text-white">
-            <h3 class="font-bold text-lg ml-4 text-purple-300">Document Viewer</h3>
-            <button onclick="closePDF()" class="bg-red-500 hover:bg-red-600 px-6 py-2 rounded-full font-bold shadow-lg transition cursor-pointer">Close ✕</button>
-        </div>
-        <div class="flex-grow p-4 pt-0 w-full h-full">
-            <iframe id="pdfFrame" src="" class="w-full h-full rounded-2xl bg-white shadow-2xl"></iframe>
-        </div>
+<!-- ═══════════════════ PDF VIEWER MODAL ════════════ -->
+<div id="pdfModal" class="fixed inset-0 bg-black/95 z-[100] flex-col backdrop-blur-sm">
+    <div class="p-4 flex justify-between items-center text-white">
+        <h3 id="pdfTitle" class="font-bold text-lg ml-4 text-purple-300 truncate max-w-xs">Document Viewer</h3>
+        <button onclick="closePDF()" class="bg-red-500 hover:bg-red-600 px-6 py-2 rounded-full font-bold shadow-lg transition cursor-pointer flex-shrink-0">Close ✕</button>
     </div>
+    <div class="flex-grow px-4 pb-4 w-full" style="height: calc(100% - 64px);">
+        <iframe id="pdfFrame" src="" class="w-full h-full rounded-2xl bg-white shadow-2xl border-0" allowfullscreen></iframe>
+    </div>
+</div>
 
-    <script>
-        // --- ⚙️ CONFIGURATION ---
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4Bk6I_G9a5-4AtooVhTmzCrCKHqrjIgjcVCULg2Zz_qgRzpWHvK54fVID6siNZhrs/exec'; 
-        
-        let GLOBAL_NOTES_DB = []; 
-        let GLOBAL_REQUESTS = []; 
-        let uploadControllers = {}; // ✨ For Cancelling Uploads
-        let isDarkMode = localStorage.getItem('theme') === 'dark';
+<!-- ═══════════════════ SCRIPTS ════════════════════ -->
+<script>
+// ══════════════════════════════════════════════════
+//  CONFIGURATION
+// ══════════════════════════════════════════════════
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4Bk6I_G9a5-4AtooVhTmzCrCKHqrjIgjcVCULg2Zz_qgRzpWHvK54fVID6siNZhrs/exec';
+const MAX_FILE_SIZE_MB   = 100;
+const CHUNK_SIZE_MB      = 4;                    // 4MB per chunk (safe under GAS 6MB limit)
+const FETCH_TIMEOUT_MS   = 20000;                // 20s timeout for data load
+const UPLOAD_TIMEOUT_MS  = 300000;               // 5 min per chunk
 
-        const dataTree = {
-            "First Year": {
-                "Semester 1": ["Engineering Mathematics- I", "Engineering Physics", "Computational thinking and Programming", "Communication Skills", "Basic Electrical and Electronics Engineering", "Engineering Physics Lab", "C Programing Lab", "Manufacturing Practice Workshop", "Computer Aided Engineering Graphics"],
-                "Semester 2": ["Engineering Mathematics - II", "Engineering Chemistry", "Problem Solving using Object Oriented Paradigm", "Universal Human Values", "Basic Civil Engineering", "Basic Mechanical Engineering", "Engineering Chemistry Lab", "Object Oriented Programming Lab", "Basic Electrical & Electronics Engineering Lab", "Computer Aided Machine Drawing"]
-            },
-            "Second Year": {
-                "Semester 3": ["Managerial Economics", "Technical Communication", "Stats & Prob", "DSA", "Operating System", "Software Engineering", "Digital Electronics"],
-                "Semester 4": ["MEFA", "Discrete Maths", "DBMS", "Theory of Computation", "Computer Networks", "Artificial Intelligence", "Computer Architecture"]
-            },
-            "Third Year": { 
-                "Semester 5": ["Information Theory & Coding", "Compiler Design", "Operating System", "Computer Graphics & Multimedia", "Analysis of Algorithms", "Machine Learning"], 
-                "Semester 6": ["DIP", "ML", "ISS", "CAO", "AI", "CC", "DS", "P of AI", "NLP", "BDA", "WSA", "SA-II", "EE", "DSS", "E&C", "TEM", "GISRS", "PE", "CN", "FOC", "A&P", "5G COMM.", "NE", "CA", "PS-II", "PSP", "EECA", "ED", "PSPL", "M&M", "CIMS", "MV", "DME-II", "QM", "RAC"] 
-            },
-            "Fourth Year": { 
-                "Semester 7": ["Deep Learning", "Internet of Things", "Big Data Analytics", "Cyber Security"], 
-                "Semester 8": ["Project", "Seminar"] 
-            }
-        };
+// ══════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════
+let GLOBAL_NOTES_DB  = [];
+let GLOBAL_REQUESTS  = [];
+let uploadControllers = {};
+let isDarkMode = localStorage.getItem('theme') === 'dark';
 
-        const appDiv = document.getElementById('app');
-        const searchContainer = document.getElementById('searchContainer');
+// ══════════════════════════════════════════════════
+//  DATA TREE
+// ══════════════════════════════════════════════════
+const dataTree = {
+    "First Year": {
+        "Semester 1": ["Engineering Mathematics- I","Engineering Physics","Computational thinking and Programming","Communication Skills","Basic Electrical and Electronics Engineering","Engineering Physics Lab","C Programing Lab","Manufacturing Practice Workshop","Computer Aided Engineering Graphics"],
+        "Semester 2": ["Engineering Mathematics - II","Engineering Chemistry","Problem Solving using Object Oriented Paradigm","Universal Human Values","Basic Civil Engineering","Basic Mechanical Engineering","Engineering Chemistry Lab","Object Oriented Programming Lab","Basic Electrical & Electronics Engineering Lab","Computer Aided Machine Drawing"]
+    },
+    "Second Year": {
+        "Semester 3": ["Managerial Economics","Technical Communication","Stats & Prob","DSA","Operating System","Software Engineering","Digital Electronics"],
+        "Semester 4": ["MEFA","Discrete Maths","DBMS","Theory of Computation","Computer Networks","Artificial Intelligence","Computer Architecture"]
+    },
+    "Third Year": {
+        "Semester 5": ["Information Theory & Coding","Compiler Design","Operating System","Computer Graphics & Multimedia","Analysis of Algorithms","Machine Learning"],
+        "Semester 6": ["DIP","ML","ISS","CAO","AI","CC","DS","P of AI","NLP","BDA","WSA","SA-II","EE","DSS","E&C","TEM","GISRS","PE","CN","FOC","A&P","5G COMM.","NE","CA","PS-II","PSP","EECA","ED","PSPL","M&M","CIMS","MV","DME-II","QM","RAC"]
+    },
+    "Fourth Year": {
+        "Semester 7": ["Deep Learning","Internet of Things","Big Data Analytics","Cyber Security"],
+        "Semester 8": ["Project","Seminar"]
+    }
+};
 
-        async function init() {
-            applyTheme();
-            try {
-                const response = await fetch(GOOGLE_SCRIPT_URL);
-                const fullData = await response.json();
-                
-                if (Array.isArray(fullData)) {
-                    GLOBAL_NOTES_DB = fullData; 
-                } else {
-                    GLOBAL_NOTES_DB = fullData.notes || [];
-                    GLOBAL_REQUESTS = fullData.requests || [];
-                }
-            } catch (e) { console.error("Database fetch failed", e); }
-            navigateTo('years');
-        }
+const yearMapping = {"1":"First Year","2":"First Year","3":"Second Year","4":"Second Year","5":"Third Year","6":"Third Year","7":"Fourth Year","8":"Fourth Year"};
 
-        function applyTheme() {
-            if (isDarkMode) { document.documentElement.classList.add('dark'); document.getElementById('themeToggle').innerText = '☀️'; } 
-            else { document.documentElement.classList.remove('dark'); document.getElementById('themeToggle').innerText = '🌙'; }
-        }
-        function toggleDarkMode() { isDarkMode = !isDarkMode; localStorage.setItem('theme', isDarkMode ? 'dark' : 'light'); applyTheme(); }
-        
-        function shareSite() {
-            if (navigator.share) navigator.share({ title: 'Notes Hub', text: '📚 Exams ki tension khatam! Yahan saare Notes aur Previous Year Papers available hain. Check it out: ', url: window.location.origin });
-            else { navigator.clipboard.writeText(window.location.origin); alert("✅ Message & Link Copied!"); }
-        }
+const appDiv           = document.getElementById('app');
+const searchContainer  = document.getElementById('searchContainer');
 
-        function handleSearch() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const resultsDiv = document.getElementById('searchResults');
-            if (query.length < 2) { resultsDiv.innerHTML = ''; return; }
-            let results = [];
-            for (let year in dataTree) {
-                for (let sem in dataTree[year]) {
-                    dataTree[year][sem].forEach(sub => {
-                        if (sub.toLowerCase().includes(query)) {
-                            const semNumber = sem.replace('Semester ', '');
-                            results.push({ year, semNumber, sub });
-                        }
-                    });
-                }
-            }
-            resultsDiv.innerHTML = results.slice(0, 6).map(r => `<div onclick="navigateTo('materialTypes', {year: '${r.year}', semNumber: '${r.semNumber}', subject: '${r.sub}'})" class="bg-white dark:bg-gray-800 p-4 rounded-xl cursor-pointer shadow-sm border border-purple-100 dark:border-gray-600 hover:border-purple-400 transition"><h4 class="font-bold text-purple-700 dark:text-purple-300 truncate" title="${r.sub}">${r.sub}</h4><p class="text-xs text-gray-500 dark:text-gray-400">Semester ${r.semNumber}</p></div>`).join('');
-        }
+// ══════════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════════
+let toastTimer;
+function showToast(msg, duration = 3000) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), duration);
+}
 
-        async function upvote(id, btnElement) {
-            if(localStorage.getItem('upvoted_' + id)) { alert("You have already upvoted this! 💖"); return; }
-            const countSpan = btnElement.querySelector('.count');
-            countSpan.innerText = parseInt(countSpan.innerText) + 1;
-            btnElement.classList.replace('bg-purple-100', 'bg-green-100');
-            localStorage.setItem('upvoted_' + id, 'true');
-            fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'upvote', id: id }) });
-        }
-
-        // ✨ NEW: BEAUTIFUL SVG STAR BOOKMARK LOGIC ✨
-        function toggleBookmark(id, btnElement) {
-            let saved = JSON.parse(localStorage.getItem('my_library') || '[]');
-            const idStr = id.toString();
-            
-            if (saved.includes(idStr)) {
-                // Remove from library
-                saved = saved.filter(nId => nId !== idStr);
-                btnElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-gray-300 dark:text-gray-600 hover:text-yellow-400 transition-colors"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" /></svg>`;
-                
-                // Hide instantly if on library page
-                if (window.history.state && window.history.state.view === 'library') {
-                    btnElement.closest('.card-wrapper').style.display = 'none';
-                }
-            } else {
-                // Add to library
-                saved.push(idStr);
-                btnElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 text-yellow-400 drop-shadow-md hover:scale-110 transition-transform"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" /></svg>`;
-            }
-            localStorage.setItem('my_library', JSON.stringify(saved));
-        }
-
-        function getBookmarkHTML(id) {
-            let saved = JSON.parse(localStorage.getItem('my_library') || '[]');
-            const isSaved = saved.includes(id.toString());
-            
-            const iconHTML = isSaved 
-                ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 text-yellow-400 drop-shadow-md hover:scale-110 transition-transform"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" /></svg>` 
-                : `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-gray-300 dark:text-gray-600 hover:text-yellow-400 transition-colors"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" /></svg>`;
-            
-            return `<button onclick="toggleBookmark('${id}', this)" class="absolute top-4 right-4 z-20 cursor-pointer" title="Save to Library">${iconHTML}</button>`;
-        }
-
-        function navigateTo(view, params = {}) { window.history.pushState({ view, params }, ""); renderView(view, params); }
-        window.onpopstate = function(event) { if (event.state) renderView(event.state.view, event.state.params); else renderView('years'); };
-
-        function renderView(view, params) {
-            searchContainer.classList.add('hidden'); 
-            if (view === 'years') renderYears();
-            if (view === 'semesters') renderSemesters(params.year);
-            if (view === 'subjects') renderSubjects(params.year, params.sem);
-            if (view === 'materialTypes') renderMaterialTypes(params.year, params.semNumber, params.subject);
-            if (view === 'notes') renderNotes(params.semNumber, params.subject, params.type);
-            if (view === 'bounty') renderBountyBoard(); 
-            if (view === 'library') renderLibrary(); 
-        }
-
-        function renderLibrary() {
-            searchContainer.classList.add('hidden');
-            let savedIds = JSON.parse(localStorage.getItem('my_library') || '[]');
-            let savedNotes = GLOBAL_NOTES_DB.filter(note => savedIds.includes(note.id.toString()));
-
-            let html = `
-                <div class="mb-6 flex justify-between items-center">
-                    <div>
-                        <button onclick="window.history.back()" class="text-purple-600 dark:text-purple-400 hover:underline mb-2 cursor-pointer block">← Back</button>
-                        <h2 class="text-3xl font-bold text-yellow-600 dark:text-yellow-400">My Library ⭐</h2>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Your personal collection for quick revision!</p>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            `;
-
-            if (savedNotes.length === 0) {
-                html += `<div class="col-span-full text-center py-16 bg-white dark:bg-gray-800 rounded-2xl card-shadow border-2 border-dashed border-yellow-200 dark:border-gray-700"><p class="text-yellow-600 dark:text-yellow-400 font-bold text-lg mb-2">Your library is empty! 📭</p><p class="text-sm text-gray-500 dark:text-gray-400">Click the ⭐ icon on any note to save it here.</p></div>`;
-            } else {
-                savedNotes.forEach(item => {
-                    const downloadUrl = item.file_url.replace('export=view', 'export=download');
-                    const isUpvoted = localStorage.getItem('upvoted_' + item.id);
-                    
-                    html += `
-                        <div class="card-wrapper relative bg-white dark:bg-gray-800 p-5 rounded-2xl card-shadow flex flex-col justify-between border border-purple-50 dark:border-gray-700 card-hover h-full group transition-all duration-300 select-none">
-                            
-                            ${getBookmarkHTML(item.id)}
-
-                            <div class="flex justify-between items-start mb-3 gap-3 pr-10">
-                                <div class="flex-1 min-w-0">
-                                    <span class="text-[10px] font-bold bg-purple-100 text-purple-700 px-2 py-1 rounded dark:bg-purple-900/30 dark:text-purple-300 mb-2 inline-block">${item.subject}</span>
-                                    <h3 class="font-bold text-purple-800 dark:text-purple-300 text-lg leading-tight line-clamp-2 break-all group-hover:line-clamp-none transition-all duration-300 cursor-default" title="${item.title}">${item.title}</h3>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2 break-all group-hover:line-clamp-none transition-all duration-300 cursor-default" title="Uploaded by: ${item.uploader}">Uploaded by: <b>${item.uploader}</b> • ${item.file_size || 'PDF'}</p>
-                                </div>
-                                <button onclick="upvote('${item.id}', this)" class="${isUpvoted ? 'bg-green-100 text-green-700' : 'bg-purple-100 text-purple-700 hover:bg-purple-200'} shrink-0 px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1 transition z-10 relative cursor-pointer">
-                                    👍 <span class="count">${item.upvotes}</span>
-                                </button>
-                            </div>
-                            <div class="flex gap-2 w-full mt-auto pt-2">
-                                <button onclick="openPDF('${item.file_url}')" class="flex-1 bg-purple-600 text-white py-2 rounded-lg font-semibold hover:bg-purple-700 transition shadow-md text-sm cursor-pointer">👀 Read</button>
-                                <a href="${downloadUrl}" target="_blank" class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white py-2 rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition shadow-md text-sm text-center cursor-pointer">⬇️ Save</a>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-            appDiv.innerHTML = html + `</div>`;
-        }
-
-        function renderBountyBoard() {
-            searchContainer.classList.add('hidden');
-            let myReqs = JSON.parse(localStorage.getItem('my_requests') || '[]');
-
-            let html = `
-                <div class="mb-6 flex justify-between items-center">
-                    <div>
-                        <button onclick="window.history.back()" class="text-purple-600 dark:text-purple-400 hover:underline mb-2 cursor-pointer block">← Back</button>
-                        <h2 class="text-3xl font-bold text-orange-600 dark:text-orange-400">Bounty Board 🎯</h2>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Help your friends by uploading what they need!</p>
-                    </div>
-                    <button onclick="openRequestModal()" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white px-5 py-2.5 rounded-xl font-bold shadow-lg transition transform hover:-translate-y-1 cursor-pointer">+ Ask Note</button>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            `;
-
-            if (GLOBAL_REQUESTS.length === 0) {
-                html += `<div class="col-span-full text-center py-16 bg-white dark:bg-gray-800 rounded-2xl card-shadow border-2 border-dashed border-orange-200 dark:border-gray-700"><p class="text-orange-500 dark:text-orange-400 font-bold text-lg">No requests yet! Everyone is fully prepared 😂</p></div>`;
-            } else {
-                GLOBAL_REQUESTS.forEach(req => {
-                    // ✨ Delete logic check ✨
-                    const deleteBtn = myReqs.includes(req.id.toString()) 
-                        ? `<button onclick="deleteRequest('${req.id}')" class="text-red-500 hover:text-red-700 text-xs font-bold border border-red-200 bg-red-50 px-2 py-0.5 rounded cursor-pointer z-10 transition">🗑️ Delete</button>` 
-                        : ``;
-
-                    html += `
-                        <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl card-shadow border-l-4 border-orange-400 flex flex-col justify-between hover:shadow-lg transition cursor-default">
-                            <div>
-                                <div class="flex justify-between items-start mb-2">
-                                    <span class="text-[10px] font-bold bg-orange-100 text-orange-700 px-2 py-1 rounded dark:bg-orange-900/30 dark:text-orange-300">Sem ${req.semester}</span>
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-[10px] text-gray-400">${req.date}</span>
-                                        ${deleteBtn}
-                                    </div>
-                                </div>
-                                <h3 class="font-bold text-slate-800 dark:text-gray-100 text-lg leading-tight mb-2 pr-2">${req.subject}</h3>
-                                <p class="text-sm text-gray-600 dark:text-gray-300 bg-orange-50 dark:bg-gray-700/50 p-3 rounded-lg border border-orange-100 dark:border-gray-600 italic mb-4">"${req.message}"</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-4 flex items-center gap-1">👤 Requested by: <b>${req.name}</b></p>
-                            </div>
-                            <button onclick="fulfillRequest('${req.semester}', '${req.subject}')" class="w-full bg-purple-600 text-white py-2.5 rounded-lg font-bold hover:bg-purple-700 shadow-md text-sm transition cursor-pointer">⬆️ I have this! Upload Now</button>
-                        </div>
-                    `;
-                });
-            }
-            appDiv.innerHTML = html + `</div>`;
-        }
-
-        // ✨ NEW: DELETE REQUEST FUNCTION ✨
-        function deleteRequest(id) {
-            if(confirm("Are you sure you want to delete this request?")) {
-                // Update Local Array
-                GLOBAL_REQUESTS = GLOBAL_REQUESTS.filter(r => r.id.toString() !== id.toString());
-                
-                // Update LocalStorage
-                let myReqs = JSON.parse(localStorage.getItem('my_requests') || '[]');
-                myReqs = myReqs.filter(rid => rid !== id.toString());
-                localStorage.setItem('my_requests', JSON.stringify(myReqs));
-                
-                // Render UI instantly
-                renderBountyBoard(); 
-                
-                // Call backend to delete
-                fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'delete_request', id: id }) });
-            }
-        }
-
-        function openRequestModal() {
-            document.getElementById('requestModal').classList.remove('hidden');
-            document.getElementById('requestModal').classList.add('flex');
-            updateReqSubjects();
-        }
-
-        function updateReqSubjects() {
-            const sem = document.getElementById('reqSem').value;
-            const yearMapping = { "1": "First Year", "2": "First Year", "3": "Second Year", "4": "Second Year", "5": "Third Year", "6": "Third Year", "7": "Fourth Year", "8": "Fourth Year" };
-            const year = yearMapping[sem];
-            document.getElementById('reqSub').innerHTML = dataTree[year]["Semester " + sem].map(s => `<option value="${s}">${s}</option>`).join('');
-        }
-
-        async function submitRequestForm() {
-            const name = document.getElementById('reqName').value.trim() || 'Anonymous';
-            const sem = document.getElementById('reqSem').value;
-            const sub = document.getElementById('reqSub').value;
-            const msg = document.getElementById('reqMsg').value.trim();
-
-            if(!msg) { alert("Bhai message toh likh de kya chahiye!"); return; }
-
-            const reqId = Date.now().toString();
-            const payload = { action: 'request', id: reqId, name: name, semester: sem, subject: sub, message: msg };
-            
-            // ✨ Save ID locally so user can delete later
-            let myReqs = JSON.parse(localStorage.getItem('my_requests') || '[]');
-            myReqs.push(reqId);
-            localStorage.setItem('my_requests', JSON.stringify(myReqs));
-
-            // Instant UI Update
-            GLOBAL_REQUESTS.unshift({ id: reqId, name: name, semester: sem, subject: sub, message: msg, date: "Just Now", status: "Open" });
-            document.getElementById('requestModal').classList.add('hidden');
-            document.getElementById('reqMsg').value = '';
-            renderBountyBoard(); 
-
-            fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-        }
-
-        function fulfillRequest(sem, subject) {
-            document.getElementById('upSem').value = sem;
-            updateUploadSubjects();
-            document.getElementById('upSub').value = subject;
-            toggleUpload(); 
-        }
-
-        function getLeaderboardHTML() {
-            if (GLOBAL_NOTES_DB.length === 0) return '';
-            let contributors = {};
-            GLOBAL_NOTES_DB.forEach(note => {
-                let name = (note.uploader || "").trim();
-                if (name && name.toLowerCase() !== 'anonymous' && name.toLowerCase() !== 'admin') {
-                    if (!contributors[name]) contributors[name] = { uploads: 0, upvotes: 0 };
-                    contributors[name].uploads += 1;
-                    contributors[name].upvotes += parseInt(note.upvotes) || 0;
-                }
-            });
-            let sortedLeaders = Object.keys(contributors).map(name => {
-                return { name: name, ...contributors[name] };
-            }).sort((a, b) => b.uploads - a.uploads); 
-            let top3 = sortedLeaders.slice(0, 3);
-            if (top3.length === 0) return ''; 
-            let html = `<div class="mb-12"><h2 class="text-xl font-bold text-purple-800 dark:text-purple-300 mb-4 flex items-center gap-2"><span>🏆</span> Wall of Fame</h2><div class="grid grid-cols-1 md:grid-cols-3 gap-4">`;
-            const medals = ['🥇', '🥈', '🥉'];
-            const styles = [
-                'bg-gradient-to-r from-yellow-50 to-yellow-100 border border-yellow-300 dark:from-yellow-900/30 dark:to-yellow-700/20 dark:border-yellow-700/50', 
-                'bg-gradient-to-r from-slate-50 to-slate-200 border border-slate-300 dark:from-slate-800 dark:to-gray-700 dark:border-gray-600', 
-                'bg-gradient-to-r from-orange-100 to-orange-300 border border-orange-400 dark:from-orange-950/40 dark:to-orange-900/40 dark:border-orange-800/50' 
-            ];
-            top3.forEach((leader, i) => {
-                html += `
-                    <div class="p-4 rounded-2xl flex items-center gap-4 card-shadow ${styles[i]}">
-                        <div class="text-4xl drop-shadow-md">${medals[i]}</div>
-                        <div>
-                            <h3 class="font-bold text-purple-900 dark:text-purple-100">${leader.name}</h3>
-                            <p class="text-xs font-semibold text-purple-700 dark:text-purple-300 mt-0.5">📚 ${leader.uploads} Uploads &nbsp;👍 ${leader.upvotes} Likes</p>
-                        </div>
-                    </div>`;
-            });
-            html += `</div></div>`;
-            return html;
-        }
-
-        function renderYears() {
-            searchContainer.classList.remove('hidden'); 
-            document.getElementById('searchInput').value = '';
-            document.getElementById('searchResults').innerHTML = '';
-
-            let html = `
-                <div class="text-center mb-10 mt-4 cursor-default">
-                    <h1 class="text-5xl font-bold text-purple-700 dark:text-purple-400 mb-2">Notes Hub</h1>
-                    <p class="text-lg text-purple-500 dark:text-gray-400">Read & Share Engineering Resources</p>
-                </div>
-                
-                ${getLeaderboardHTML()} 
-
-                <div class="mb-12">
-                    <h2 class="text-xl font-bold text-purple-800 dark:text-purple-300 mb-4 flex items-center gap-2"><span>🔥</span> Recently Added</h2>
-                    <div class="flex overflow-x-auto gap-4 pb-4 snap-x hide-scroll">
-                        ${getTrendingHTML()}
-                    </div>
-                </div>
-
-                <h2 class="text-xl font-bold text-purple-800 dark:text-purple-300 mb-6 pl-2 border-l-4 border-purple-500">Browse by Year</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            `;
-            Object.keys(dataTree).forEach(year => {
-                html += `<div onclick="navigateTo('semesters', {year: '${year}'})" class="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center cursor-pointer card-shadow card-hover transition-all border border-purple-50 dark:border-gray-700"><h3 class="font-semibold text-lg text-purple-800 dark:text-purple-300">${year}</h3></div>`;
-            });
-            html += `</div>`;
-            appDiv.innerHTML = html;
-        }
-
-        function getTrendingHTML() {
-            if (GLOBAL_NOTES_DB.length === 0) return `<p class="text-gray-500 italic ml-2">No new notes recently...</p>`;
-            const recent = GLOBAL_NOTES_DB.slice(0, 4);
-            return recent.map(item => `
-                <div class="card-wrapper relative bg-white dark:bg-gray-800 min-w-[280px] p-5 rounded-2xl card-shadow border border-purple-50 dark:border-gray-700 snap-center shrink-0 flex flex-col justify-between group transition-all duration-300 select-none">
-                    
-                    ${getBookmarkHTML(item.id)}
-
-                    <div>
-                        <div class="flex justify-between items-start mb-2 pr-10">
-                            <span class="text-xs font-bold bg-green-100 text-green-700 px-2 py-1 rounded">New</span>
-                            <span class="text-xs text-gray-500 dark:text-gray-400">Sem ${item.semester}</span>
-                        </div>
-                        <h3 class="font-bold text-purple-800 dark:text-purple-300 line-clamp-2 break-all group-hover:line-clamp-none transition-all duration-300 cursor-default pr-10" title="${item.subject}">${item.subject}</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 break-all mb-3 group-hover:line-clamp-none transition-all duration-300 cursor-default pr-10" title="${item.title}">${item.title}</p>
-                    </div>
-                    <button onclick="openPDF('${item.file_url}')" class="w-full bg-purple-600 text-white py-2 rounded-lg text-sm font-semibold hover:bg-purple-700 transition mt-auto cursor-pointer">👀 View Fast</button>
-                </div>
-            `).join('');
-        }
-
-        function renderSemesters(year) {
-            let html = `<div class="mb-8"><button onclick="window.history.back()" class="text-purple-600 dark:text-purple-400 hover:underline mb-4 cursor-pointer">← Back</button><h2 class="text-2xl font-bold text-purple-800 dark:text-purple-300">${year} Semesters</h2></div><div class="grid grid-cols-2 md:grid-cols-4 gap-6">`;
-            Object.keys(dataTree[year]).forEach(sem => {
-                html += `<div onclick="navigateTo('subjects', {year: '${year}', sem: '${sem}'})" class="bg-purple-100/50 dark:bg-gray-800 rounded-2xl p-8 text-center cursor-pointer card-shadow card-hover border border-purple-100 dark:border-gray-700"><h3 class="font-semibold text-lg text-purple-800 dark:text-purple-300">${sem}</h3></div>`;
-            });
-            appDiv.innerHTML = html + `</div>`;
-        }
-
-        function renderSubjects(year, sem) {
-            let html = `<div class="mb-8"><button onclick="window.history.back()" class="text-purple-600 dark:text-purple-400 hover:underline mb-4 cursor-pointer">← Back</button><h2 class="text-2xl font-bold text-purple-800 dark:text-purple-300">${sem} Subjects</h2></div><div class="grid grid-cols-1 md:grid-cols-3 gap-6">`;
-            dataTree[year][sem].forEach(sub => {
-                const semNumber = sem.replace('Semester ', '');
-                html += `<div onclick="navigateTo('materialTypes', {year: '${year}', semNumber: '${semNumber}', subject: '${sub}'})" class="bg-white dark:bg-gray-800 rounded-2xl p-6 text-center cursor-pointer card-shadow card-hover border border-purple-50 dark:border-gray-700 flex flex-col justify-center items-center h-32"><h3 class="font-bold text-purple-700 dark:text-purple-300 line-clamp-2 w-full px-2" title="${sub}">${sub}</h3></div>`;
-            });
-            appDiv.innerHTML = html + `</div>`;
-        }
-
-        function renderMaterialTypes(year, semNumber, subject) {
-            appDiv.innerHTML = `
-                <div class="mb-8"><button onclick="window.history.back()" class="text-purple-600 dark:text-purple-400 hover:underline mb-4 cursor-pointer">← Back to Subjects</button><h2 class="text-2xl font-bold text-purple-800 dark:text-purple-300">${subject}</h2></div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div onclick="navigateTo('notes', {semNumber: '${semNumber}', subject: '${subject}', type: 'Notes'})" class="bg-white dark:bg-gray-800 rounded-2xl p-10 text-center cursor-pointer card-shadow card-hover border-2 border-emerald-50 dark:border-gray-600">
-                        <span class="text-5xl mb-4 block">📚</span><h3 class="font-bold text-xl text-emerald-700 dark:text-emerald-400">Study Notes</h3>
-                    </div>
-                    <div onclick="navigateTo('notes', {semNumber: '${semNumber}', subject: '${subject}', type: 'Question Paper'})" class="bg-white dark:bg-gray-800 rounded-2xl p-10 text-center cursor-pointer card-shadow card-hover border-2 border-blue-50 dark:border-gray-600">
-                        <span class="text-5xl mb-4 block">📝</span><h3 class="font-bold text-xl text-blue-700 dark:text-blue-400">Question Papers</h3>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderNotes(semNumber, subject, type) {
-            const data = GLOBAL_NOTES_DB.filter(note => note.semester == semNumber && note.subject === subject && note.material_type === type);
-            
-            let html = `
-                <div class="mb-6"><button onclick="window.history.back()" class="text-purple-600 dark:text-purple-400 hover:underline mb-4 cursor-pointer">← Back</button><h2 class="text-2xl font-bold text-purple-800 dark:text-purple-300 border-b border-purple-200 dark:border-gray-600 pb-2">${subject} ${type}s</h2></div>
-                
-                <div class="bg-yellow-50 dark:bg-yellow-900/30 border-l-4 border-yellow-400 p-4 rounded-r-lg mb-8 cursor-default">
-                    <p class="text-sm text-yellow-800 dark:text-yellow-200 font-medium">💡 Aapka ek vote kisi ki back aane se bacha sakta hai! Jo notes best lagein unhe <b>Upvote (👍)</b> zaroor karein taaki sabka fayda ho!</p>
-                </div>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            `;
-
-            if (data.length === 0) {
-                html += `<div class="col-span-full text-center py-12 bg-white dark:bg-gray-800 rounded-2xl card-shadow border-2 border-dashed border-purple-100 dark:border-gray-700"><p class="text-purple-400 dark:text-purple-300">No ${type}s found yet. Be the first to upload!</p></div>`;
-            } else {
-                data.sort((a, b) => b.upvotes - a.upvotes).forEach(item => {
-                    const downloadUrl = item.file_url.replace('export=view', 'export=download');
-                    const isUpvoted = localStorage.getItem('upvoted_' + item.id);
-                    
-                    html += `
-                        <div class="card-wrapper relative bg-white dark:bg-gray-800 p-5 rounded-2xl card-shadow flex flex-col justify-between border border-purple-50 dark:border-gray-700 card-hover h-full group transition-all duration-300 select-none">
-                            
-                            ${getBookmarkHTML(item.id)}
-
-                            <div class="flex justify-between items-start mb-3 gap-3 pr-10">
-                                <div class="flex-1 min-w-0">
-                                    <h3 class="font-bold text-purple-800 dark:text-purple-300 text-lg leading-tight line-clamp-2 break-all group-hover:line-clamp-none transition-all duration-300 cursor-default" title="${item.title}">${item.title}</h3>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2 break-all group-hover:line-clamp-none transition-all duration-300 cursor-default" title="Uploaded by: ${item.uploader}">Uploaded by: <b>${item.uploader}</b> • ${item.file_size || 'PDF'}</p>
-                                </div>
-                                <button onclick="upvote('${item.id}', this)" class="${isUpvoted ? 'bg-green-100 text-green-700' : 'bg-purple-100 text-purple-700 hover:bg-purple-200'} shrink-0 px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1 transition z-10 relative cursor-pointer">
-                                    👍 <span class="count">${item.upvotes}</span>
-                                </button>
-                            </div>
-                            <div class="flex gap-2 w-full mt-auto pt-2">
-                                <button onclick="openPDF('${item.file_url}')" class="flex-1 bg-purple-600 text-white py-2 rounded-lg font-semibold hover:bg-purple-700 transition shadow-md text-sm cursor-pointer">👀 Read</button>
-                                <a href="${downloadUrl}" target="_blank" class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white py-2 rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition shadow-md text-sm text-center cursor-pointer">⬇️ Save</a>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-            appDiv.innerHTML = html + `</div>`;
-        }
-
-        function openPDF(url) {
-            let embedUrl = url;
-            if (url.includes('uc?export=view&id=')) {
-                embedUrl = `https://drive.google.com/file/d/${url.split('id=')[1]}/preview`;
-            }
-            document.getElementById('pdfFrame').src = embedUrl;
-            document.getElementById('pdfModal').classList.remove('hidden');
-            document.getElementById('pdfModal').classList.add('flex');
-            window.history.pushState({ view: 'pdf_open' }, "");
-        }
-        function closePDF() {
-            document.getElementById('pdfModal').classList.add('hidden');
-            document.getElementById('pdfModal').classList.remove('flex');
-            document.getElementById('pdfFrame').src = '';
-        }
-        window.addEventListener('popstate', function(event) {
-            if (document.getElementById('pdfModal').style.display !== 'none') closePDF();
-        });
-
-        function toggleUpload() { document.getElementById('uploadModal').classList.toggle('hidden'); updateUploadSubjects(); }
-        function updateUploadSubjects() {
-            const sem = document.getElementById('upSem').value;
-            const yearMapping = { "1": "First Year", "2": "First Year", "3": "Second Year", "4": "Second Year", "5": "Third Year", "6": "Third Year", "7": "Fourth Year", "8": "Fourth Year" };
-            const year = yearMapping[sem];
-            document.getElementById('upSub').innerHTML = dataTree[year]["Semester " + sem].map(s => `<option value="${s}">${s}</option>`).join('');
-        }
-        
-        document.getElementById('fileInput').addEventListener('change', (e) => {
-            Array.from(e.target.files).forEach(file => {
-                processUpload(file);
-            });
-        });
-
-        // ✨ NEW: ABORT CONTROLLER TO CANCEL UPLOADS ✨
-        function cancelUpload(id) {
-            if(uploadControllers[id]) {
-                uploadControllers[id].abort();
-                delete uploadControllers[id];
-            }
-            const el = document.getElementById(`queue-item-${id}`);
-            if(el) el.remove();
-        }
-
-        async function processUpload(file) {
-            const id = new Date().getTime().toString() + Math.floor(Math.random() * 100);
-            const sem = document.getElementById('upSem').value;
-            const sub = document.getElementById('upSub').value;
-            const type = document.getElementById('upType').value;
-            const uploader = document.getElementById('upName').value.trim() || 'Anonymous';
-
-            // Initialize abort controller
-            uploadControllers[id] = new AbortController();
-
-            const queue = document.getElementById('uploadQueue');
-            const item = document.createElement('div');
-            item.id = `queue-item-${id}`;
-            item.className = 'bg-purple-50 dark:bg-gray-700 p-3 rounded-xl border border-purple-200 dark:border-gray-600';
-            // Added ❌ Cancel Button
-            item.innerHTML = `<div class="flex justify-between mb-1"><span class="font-semibold text-sm truncate w-32 text-purple-800 dark:text-white" title="${file.name}">${file.name}</span><div class="flex items-center gap-2"><span id="status-${id}" class="text-xs text-purple-600 font-bold">Uploading...</span><button onclick="cancelUpload('${id}')" class="text-red-500 hover:text-red-700 text-xs font-bold cursor-pointer" title="Cancel">❌</button></div></div><div class="w-full bg-purple-200 h-1.5 rounded-full overflow-hidden"><div id="bar-${id}" class="bg-purple-600 h-full w-0 progress-animate"></div></div>`;
-            queue.appendChild(item);
-
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = async () => {
-                try {
-                    updateBar(id, 40);
-                    const payload = { 
-                        base64: reader.result.split(',')[1], filename: file.name, mimetype: file.type, 
-                        title: file.name.replace('.pdf', ''), semester: sem, subject: sub, type: type, 
-                        size: (file.size / (1024*1024)).toFixed(2) + ' MB',
-                        uploader: uploader, id: id, action: 'upload'
-                    };
-                    
-                    // Pass the abort signal
-                    const response = await fetch(GOOGLE_SCRIPT_URL, { 
-                        method: 'POST', 
-                        body: JSON.stringify(payload),
-                        signal: uploadControllers[id].signal 
-                    });
-                    
-                    const driveData = await response.json();
-                    if (driveData.error) throw new Error(driveData.error);
-                    
-                    updateBar(id, 100);
-                    document.getElementById(`status-${id}`).innerText = "✅ Done";
-                    
-                    GLOBAL_NOTES_DB.unshift({ ...payload, created_at: new Date().toLocaleDateString(), file_url: driveData.url, upvotes: 0 });
-                    setTimeout(() => item.remove(), 4000);
-                } catch (err) {
-                    if (err.name === 'AbortError') {
-                        console.log("Upload manually cancelled.");
-                    } else {
-                        document.getElementById(`status-${id}`).innerText = "❌ Failed";
-                        document.getElementById(`bar-${id}`).classList.replace('bg-purple-600', 'bg-red-500');
-                    }
-                }
-            };
-        }
-        function updateBar(id, val) { 
-            const bar = document.getElementById(`bar-${id}`);
-            if(bar) bar.style.width = val + '%'; 
-        }
-
-        init();
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').then(reg => {
-                    console.log('PWA Service Worker registered!', reg);
-                }).catch(err => console.log('Service Worker registration failed', err));
-            });
-        }
-       function shareApp() {
-    const shareData = {
-        title: 'Notes Hub - Collaborative Learning 📚',
-        text: `*Notes Hub: बेहतर पढ़ाई, अब सबके साथ!* 🚀\n\nनमस्ते! मैंने *Notes Hub* पर अपनी पढ़ाई के लिए बेहतरीन नोट्स देखे हैं। यहाँ आप न केवल नोट्स पढ़ सकते हैं, बल्कि अपने नोट्स भी अपलोड करके दूसरों की मदद कर सकते हैं।\n\nआइए, मिलकर अपनी पढ़ाई को और भी आसान और व्यवस्थित बनाते हैं! यहाँ देखें: 👇`,
-        url: window.location.origin 
-    };
-
-    if (navigator.share) {
-        navigator.share(shareData)
-            .catch((error) => console.log('Error sharing', error));
+// ══════════════════════════════════════════════════
+//  THEME
+// ══════════════════════════════════════════════════
+function applyTheme() {
+    if (isDarkMode) {
+        document.documentElement.classList.add('dark');
+        document.getElementById('themeToggle').textContent = '☀️';
     } else {
-        const dummyText = `${shareData.text}\n${shareData.url}`;
-        navigator.clipboard.writeText(dummyText);
-        alert("✅ प्रोफेशनल मैसेज और लिंक कॉपी हो गया है!");
+        document.documentElement.classList.remove('dark');
+        document.getElementById('themeToggle').textContent = '🌙';
     }
 }
-    </script>
+function toggleDarkMode() {
+    isDarkMode = !isDarkMode;
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    applyTheme();
+}
+
+// ══════════════════════════════════════════════════
+//  FETCH WITH TIMEOUT HELPER
+// ══════════════════════════════════════════════════
+function fetchWithTimeout(url, options = {}, ms = FETCH_TIMEOUT_MS) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), ms);
+    return fetch(url, { ...options, signal: controller.signal })
+        .finally(() => clearTimeout(timer));
+}
+
+// ══════════════════════════════════════════════════
+//  INIT – DATA LOAD WITH RETRY
+// ══════════════════════════════════════════════════
+async function init() {
+    applyTheme();
+    // Show spinner while loading
+    appDiv.innerHTML = `<div class="text-center py-20"><div class="spinner mx-auto mb-4" style="width:36px;height:36px;border-color:rgba(126,34,206,.3);border-top-color:#7e22ce;"></div><p class="text-lg text-purple-700 font-semibold animate-pulse">Loading Notes Hub... 🚀</p></div>`;
+
+    let retries = 2;
+    while (retries >= 0) {
+        try {
+            const response = await fetchWithTimeout(GOOGLE_SCRIPT_URL, {}, FETCH_TIMEOUT_MS);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const fullData = await response.json();
+
+            if (Array.isArray(fullData)) {
+                GLOBAL_NOTES_DB = fullData;
+            } else {
+                GLOBAL_NOTES_DB = fullData.notes    || [];
+                GLOBAL_REQUESTS = fullData.requests || [];
+            }
+
+            // FIX: Normalise field names (backend may return material_type OR type)
+            GLOBAL_NOTES_DB = GLOBAL_NOTES_DB.map(n => ({
+                ...n,
+                material_type: n.material_type || n.type || 'Notes',
+                upvotes: parseInt(n.upvotes) || 0,
+                id: (n.id || '').toString(),
+                file_size: n.file_size || n.size || '',
+            }));
+
+            break; // success
+        } catch (e) {
+            retries--;
+            if (retries < 0) {
+                console.error("Data fetch failed after retries:", e);
+                appDiv.innerHTML = `
+                    <div class="text-center py-20">
+                        <p class="text-3xl mb-4">😕</p>
+                        <p class="text-lg font-semibold text-red-500 mb-2">Failed to load data</p>
+                        <p class="text-sm text-gray-500 mb-6">Check your internet connection and try again.</p>
+                        <button onclick="init()" class="bg-purple-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-purple-700 transition cursor-pointer">🔄 Retry</button>
+                    </div>`;
+                return;
+            }
+            await new Promise(r => setTimeout(r, 1500)); // wait before retry
+        }
+    }
+    navigateTo('years');
+    registerServiceWorker();
+}
+
+// ══════════════════════════════════════════════════
+//  MODAL HELPERS  (FIX: was using classList.toggle hidden which
+//  conflicts with Tailwind's flex utility – use style.display)
+// ══════════════════════════════════════════════════
+function openModal(id) {
+    const el = document.getElementById(id);
+    el.style.display = 'flex';
+    // Update subjects whenever modal opens
+    if (id === 'uploadModal')  updateUploadSubjects();
+    if (id === 'requestModal') updateReqSubjects();
+}
+function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+}
+function toggleUpload() {
+    const el = document.getElementById('uploadModal');
+    if (el.style.display === 'flex') closeModal('uploadModal');
+    else openModal('uploadModal');
+}
+function openRequestModal() { openModal('requestModal'); }
+
+// ══════════════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════════════
+function navigateTo(view, params = {}) {
+    window.history.pushState({ view, params }, '');
+    renderView(view, params);
+}
+window.onpopstate = function(event) {
+    // FIX: guard against null state (initial page load)
+    if (event.state) renderView(event.state.view, event.state.params || {});
+    else renderView('years');
+};
+
+function renderView(view, params = {}) {
+    searchContainer.classList.add('hidden');
+    switch (view) {
+        case 'years':         renderYears(); break;
+        case 'semesters':     renderSemesters(params.year); break;
+        case 'subjects':      renderSubjects(params.year, params.sem); break;
+        case 'materialTypes': renderMaterialTypes(params.year, params.semNumber, params.subject); break;
+        case 'notes':         renderNotes(params.semNumber, params.subject, params.type); break;
+        case 'bounty':        renderBountyBoard(); break;
+        case 'library':       renderLibrary(); break;
+        default:              renderYears();
+    }
+}
+
+// ══════════════════════════════════════════════════
+//  SUBJECT DROPDOWN HELPERS
+// ══════════════════════════════════════════════════
+function getSubjectsForSem(sem) {
+    const year = yearMapping[sem];
+    return (dataTree[year] && dataTree[year]["Semester " + sem]) || [];
+}
+function updateUploadSubjects() {
+    const sem = document.getElementById('upSem').value;
+    document.getElementById('upSub').innerHTML =
+        getSubjectsForSem(sem).map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
+}
+function updateReqSubjects() {
+    const sem = document.getElementById('reqSem').value;
+    document.getElementById('reqSub').innerHTML =
+        getSubjectsForSem(sem).map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
+}
+
+// ══════════════════════════════════════════════════
+//  SEARCH
+// ══════════════════════════════════════════════════
+function handleSearch() {
+    const query       = document.getElementById('searchInput').value.toLowerCase().trim();
+    const resultsDiv  = document.getElementById('searchResults');
+    const clearBtn    = document.getElementById('searchClearBtn');
+
+    clearBtn.classList.toggle('hidden', query.length === 0);
+
+    if (query.length < 2) { resultsDiv.innerHTML = ''; return; }
+
+    let results = [];
+    for (let year in dataTree) {
+        for (let sem in dataTree[year]) {
+            dataTree[year][sem].forEach(sub => {
+                if (sub.toLowerCase().includes(query)) {
+                    results.push({ year, semNumber: sem.replace('Semester ',''), sub });
+                }
+            });
+        }
+    }
+    resultsDiv.innerHTML = results.slice(0, 8).map(r =>
+        `<div onclick="navigateTo('materialTypes',{year:'${escJs(r.year)}',semNumber:'${r.semNumber}',subject:'${escJs(r.sub)}'})"
+            class="bg-white dark:bg-gray-800 p-4 rounded-xl cursor-pointer shadow-sm border border-purple-100 dark:border-gray-600 hover:border-purple-400 transition">
+            <h4 class="font-bold text-purple-700 dark:text-purple-300 truncate" title="${escapeHtml(r.sub)}">${escapeHtml(r.sub)}</h4>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Semester ${r.semNumber}</p>
+        </div>`
+    ).join('');
+}
+function clearSearch() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchResults').innerHTML = '';
+    document.getElementById('searchClearBtn').classList.add('hidden');
+}
+
+// ══════════════════════════════════════════════════
+//  ESCAPE HELPERS (XSS prevention)
+// ══════════════════════════════════════════════════
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+// For use inside onclick="…" attributes — escape single quotes
+function escJs(str) { return String(str).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+
+// ══════════════════════════════════════════════════
+//  UPVOTE
+// ══════════════════════════════════════════════════
+async function upvote(id, btnElement) {
+    if (localStorage.getItem('upvoted_' + id)) {
+        showToast('You already upvoted this! 💖'); return;
+    }
+    const countSpan = btnElement.querySelector('.count');
+    countSpan.textContent = parseInt(countSpan.textContent) + 1;
+    btnElement.classList.replace('bg-purple-100','bg-green-100');
+    btnElement.classList.replace('text-purple-700','text-green-700');
+    localStorage.setItem('upvoted_' + id, 'true');
+    // Update in-memory DB too
+    const note = GLOBAL_NOTES_DB.find(n => n.id === id);
+    if (note) note.upvotes = (note.upvotes || 0) + 1;
+
+    try {
+        await fetchWithTimeout(GOOGLE_SCRIPT_URL, { method:'POST', body: JSON.stringify({ action:'upvote', id }) }, 10000);
+    } catch(e) { console.warn('Upvote sync failed (offline?)'); }
+}
+
+// ══════════════════════════════════════════════════
+//  BOOKMARK / LIBRARY
+// ══════════════════════════════════════════════════
+function toggleBookmark(id, btnElement) {
+    let saved = JSON.parse(localStorage.getItem('my_library') || '[]');
+    const idStr = id.toString();
+    if (saved.includes(idStr)) {
+        saved = saved.filter(nId => nId !== idStr);
+        btnElement.innerHTML = starSVG(false);
+        if (window.history.state && window.history.state.view === 'library') {
+            const card = btnElement.closest('.card-wrapper');
+            if (card) card.remove();
+        }
+        showToast('Removed from Library');
+    } else {
+        saved.push(idStr);
+        btnElement.innerHTML = starSVG(true);
+        showToast('Saved to Library ⭐');
+    }
+    localStorage.setItem('my_library', JSON.stringify(saved));
+}
+
+function starSVG(filled) {
+    return filled
+        ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 text-yellow-400 drop-shadow-md hover:scale-110 transition-transform"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" /></svg>`
+        : `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-gray-300 dark:text-gray-600 hover:text-yellow-400 transition-colors"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" /></svg>`;
+}
+
+function getBookmarkHTML(id) {
+    const saved   = JSON.parse(localStorage.getItem('my_library') || '[]');
+    const isSaved = saved.includes(id.toString());
+    return `<button onclick="toggleBookmark('${escJs(id)}', this)" class="absolute top-4 right-4 z-20 cursor-pointer" title="Save to Library">${starSVG(isSaved)}</button>`;
+}
+
+// ══════════════════════════════════════════════════
+//  PDF VIEWER
+//  FIX: was using classList which broke with display:none/flex combo
+// ══════════════════════════════════════════════════
+function openPDF(url, title) {
+    let embedUrl = url;
+    // Convert Google Drive view links to preview links
+    if (url.includes('drive.google.com/uc?export=view&id=')) {
+        embedUrl = `https://drive.google.com/file/d/${url.split('id=')[1]}/preview`;
+    } else if (url.includes('drive.google.com/file/d/') && !url.includes('/preview')) {
+        // Handle /view or bare file URLs
+        embedUrl = url.replace(/\/view.*$/, '/preview').replace(/\/edit.*$/, '/preview');
+    }
+    document.getElementById('pdfFrame').src  = embedUrl;
+    document.getElementById('pdfTitle').textContent = title || 'Document Viewer';
+    document.getElementById('pdfModal').classList.add('open');
+    window.history.pushState({ view: 'pdf_open' }, '');
+}
+
+function closePDF() {
+    document.getElementById('pdfModal').classList.remove('open');
+    // Unload iframe to stop the PDF rendering (saves memory)
+    setTimeout(() => { document.getElementById('pdfFrame').src = ''; }, 300);
+}
+
+window.addEventListener('popstate', function(event) {
+    if (document.getElementById('pdfModal').classList.contains('open')) {
+        closePDF();
+    } else if (event.state) {
+        renderView(event.state.view, event.state.params || {});
+    } else {
+        renderView('years');
+    }
+});
+
+// ══════════════════════════════════════════════════
+//  DRAG-AND-DROP FOR UPLOAD ZONE
+// ══════════════════════════════════════════════════
+function handleDragOver(e) {
+    e.preventDefault();
+    document.getElementById('dropZone').classList.add('drag-active');
+}
+function handleDragLeave(e) {
+    document.getElementById('dropZone').classList.remove('drag-active');
+}
+function handleDrop(e) {
+    e.preventDefault();
+    document.getElementById('dropZone').classList.remove('drag-active');
+    const files = Array.from(e.dataTransfer.files).filter(f => f.type === 'application/pdf');
+    if (files.length === 0) { showToast('⚠️ Only PDF files are accepted!'); return; }
+    files.forEach(file => processUpload(file));
+}
+function handleFileSelect(e) {
+    Array.from(e.target.files).forEach(file => processUpload(file));
+    // Reset input so same file can be re-selected
+    e.target.value = '';
+}
+
+// ══════════════════════════════════════════════════
+//  UPLOAD CORE
+//  FIXES:
+//   1. File size validation before base64 conversion
+//   2. Non-PDF file rejection
+//   3. Proper AbortController per upload
+//   4. material_type field name consistency
+//   5. Chunked upload for large files (up to 100MB)
+//   6. Correct note field for in-memory DB after upload
+// ══════════════════════════════════════════════════
+
+// ── Cancel an in-progress upload ──────────────────
+function cancelUpload(id) {
+    if (uploadControllers[id]) {
+        uploadControllers[id].cancelled = true; // flag checked in loop
+    }
+    const el = document.getElementById(`queue-item-${id}`);
+    if (el) {
+        document.getElementById(`status-${id}`).textContent = 'Cancelled';
+        setTimeout(() => el.remove(), 1500);
+    }
+}
+
+// ── Helper: read a Blob slice as base64 string ────
+function readSliceAsBase64(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload  = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = () => reject(new Error('Slice read error'));
+        reader.readAsDataURL(blob);
+    });
+}
+
+// ── Helper: POST one chunk to GAS with timeout ────
+async function postChunk(payload, signal) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), UPLOAD_TIMEOUT_MS);
+    // Merge external cancel signal
+    signal.addEventListener('abort', () => controller.abort(), { once: true });
+    try {
+        const res = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            signal: controller.signal
+        });
+        clearTimeout(timer);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json();
+    } catch (e) {
+        clearTimeout(timer);
+        throw e;
+    }
+}
+
+// ── Main upload function (chunked) ────────────────
+async function processUpload(file) {
+    // ── Validate ──────────────────────────────────
+    if (file.type !== 'application/pdf') {
+        showToast(`❌ ${file.name} — sirf PDF files allowed hain!`); return;
+    }
+    if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+        showToast(`❌ ${file.name} — ${MAX_FILE_SIZE_MB}MB se badi file nahi chalegi!`); return;
+    }
+
+    const id       = Date.now().toString() + Math.floor(Math.random() * 9999);
+    const sem      = document.getElementById('upSem').value;
+    const sub      = document.getElementById('upSub').value;
+    const type     = document.getElementById('upType').value;
+    const uploader = document.getElementById('upName').value.trim() || 'Anonymous';
+    const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+
+    // Shared cancel flag object (checked across chunks)
+    uploadControllers[id] = { cancelled: false };
+    const cancelSignal = new AbortController();
+
+    // ── Build queue UI ────────────────────────────
+    const queue = document.getElementById('uploadQueue');
+    const item  = document.createElement('div');
+    item.id        = `queue-item-${id}`;
+    item.className = 'bg-purple-50 dark:bg-gray-700 p-3 rounded-xl border border-purple-200 dark:border-gray-600';
+    item.innerHTML = `
+        <div class="flex justify-between mb-1 gap-2">
+            <span class="font-semibold text-sm truncate flex-1 text-purple-800 dark:text-white" title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</span>
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <span id="status-${id}" class="text-xs text-purple-600 dark:text-purple-300 font-bold whitespace-nowrap">Preparing...</span>
+                <button onclick="cancelUpload('${id}')" class="text-red-400 hover:text-red-600 text-xs font-bold cursor-pointer" title="Cancel">✕</button>
+            </div>
+        </div>
+        <div class="w-full bg-purple-200 h-2 rounded-full overflow-hidden">
+            <div id="bar-${id}" class="bg-purple-600 h-full w-0 progress-animate rounded-full"></div>
+        </div>
+        <p id="chunk-info-${id}" class="text-[10px] text-purple-400 mt-1">Chunk 0 / ? • ${fileSizeMB} MB</p>`;
+    queue.prepend(item);
+
+    const setStatus    = msg  => { const e = document.getElementById(`status-${id}`);     if (e) e.textContent = msg; };
+    const setBar       = pct  => { const e = document.getElementById(`bar-${id}`);        if (e) e.style.width = pct + '%'; };
+    const setChunkInfo = msg  => { const e = document.getElementById(`chunk-info-${id}`); if (e) e.textContent = msg; };
+
+    // ── Chunk calculation ─────────────────────────
+    const CHUNK_BYTES  = CHUNK_SIZE_MB * 1024 * 1024;
+    const totalChunks  = Math.ceil(file.size / CHUNK_BYTES);
+
+    try {
+        let uploadSessionId = null; // GAS returns this after first chunk to track the temp file
+
+        for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
+
+            // Check for cancellation before each chunk
+            if (uploadControllers[id]?.cancelled) throw new DOMException('Cancelled', 'AbortError');
+
+            const start  = chunkIndex * CHUNK_BYTES;
+            const end    = Math.min(start + CHUNK_BYTES, file.size);
+            const slice  = file.slice(start, end);
+            const base64 = await readSliceAsBase64(slice);
+
+            const isFirst = chunkIndex === 0;
+            const isLast  = chunkIndex === totalChunks - 1;
+
+            const progress = Math.round(((chunkIndex) / totalChunks) * 100);
+            setBar(progress);
+            setStatus(`Uploading... ${progress}%`);
+            setChunkInfo(`Chunk ${chunkIndex + 1} / ${totalChunks} • ${fileSizeMB} MB`);
+
+            const payload = {
+                action:         'upload_chunk',
+                chunk:          base64,
+                chunkIndex,
+                totalChunks,
+                isFirst,
+                isLast,
+                uploadSessionId,  // null on first chunk; GAS returns it back
+                // File metadata (only needed on first chunk but sent every time for safety)
+                filename:       file.name,
+                mimetype:       file.type,
+                title:          file.name.replace(/\.pdf$/i, ''),
+                semester:       sem,
+                subject:        sub,
+                type,
+                material_type:  type,
+                size:           fileSizeMB + ' MB',
+                file_size:      fileSizeMB + ' MB',
+                uploader,
+                id
+            };
+
+            const result = await postChunk(payload, cancelSignal.signal);
+
+            if (result.error) throw new Error(result.error);
+
+            // GAS sends back sessionId so we can append to same temp file
+            if (result.uploadSessionId) uploadSessionId = result.uploadSessionId;
+
+            // Last chunk → GAS finalizes and sends back the Drive URL
+            if (isLast) {
+                setBar(100);
+                setStatus('✅ Done!');
+                setChunkInfo(`Sab chunks uploaded ✅ • ${fileSizeMB} MB`);
+                document.getElementById(`bar-${id}`)?.classList.replace('bg-purple-600', 'bg-green-500');
+
+                // Add to in-memory DB
+                GLOBAL_NOTES_DB.unshift({
+                    id,
+                    title:         file.name.replace(/\.pdf$/i, ''),
+                    semester:      sem,
+                    subject:       sub,
+                    material_type: type,
+                    file_size:     fileSizeMB + ' MB',
+                    uploader,
+                    file_url:      result.url || result.viewUrl || '',
+                    upvotes:       0,
+                    created_at:    new Date().toLocaleDateString('en-IN'),
+                });
+
+                showToast('✅ File upload ho gayi! Thank you 🙏');
+                setTimeout(() => item.remove(), 5000);
+            }
+        }
+
+    } catch (err) {
+        if (err.name === 'AbortError' || uploadControllers[id]?.cancelled) {
+            setStatus('Cancelled');
+            setBar(0);
+            // Tell GAS to clean up the incomplete temp file
+            if (uploadControllers[id]?.sessionId) {
+                fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'cancel_upload', uploadSessionId: uploadControllers[id].sessionId }) }).catch(() => {});
+            }
+            setTimeout(() => item.remove(), 2000);
+        } else {
+            console.error('Upload error:', err);
+            setStatus('❌ Failed');
+            setChunkInfo(`Error: ${err.message}`);
+            document.getElementById(`bar-${id}`)?.classList.replace('bg-purple-600', 'bg-red-500');
+            showToast(`❌ Upload fail: ${err.message}`);
+        }
+    } finally {
+        delete uploadControllers[id];
+    }
+}
+
+// ══════════════════════════════════════════════════
+//  REQUEST FORM
+// ══════════════════════════════════════════════════
+async function submitRequestForm() {
+    const name = document.getElementById('reqName').value.trim() || 'Anonymous';
+    const sem  = document.getElementById('reqSem').value;
+    const sub  = document.getElementById('reqSub').value;
+    const msg  = document.getElementById('reqMsg').value.trim();
+
+    if (!msg)  { showToast('⚠️ Please describe what you need!'); return; }
+    if (!sub)  { showToast('⚠️ Please select a subject!'); return; }
+
+    const btn   = document.getElementById('reqSubmitBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Posting...';
+
+    const reqId   = Date.now().toString();
+    const payload = { action: 'request', id: reqId, name, semester: sem, subject: sub, message: msg };
+
+    let myReqs = JSON.parse(localStorage.getItem('my_requests') || '[]');
+    myReqs.push(reqId);
+    localStorage.setItem('my_requests', JSON.stringify(myReqs));
+
+    // Optimistic UI update
+    GLOBAL_REQUESTS.unshift({ id: reqId, name, semester: sem, subject: sub, message: msg, date: 'Just Now', status: 'Open' });
+    closeModal('requestModal');
+    document.getElementById('reqMsg').value = '';
+    renderBountyBoard();
+    showToast('Request posted! 🎯');
+
+    try {
+        await fetchWithTimeout(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }, 10000);
+    } catch(e) { console.warn('Request sync failed (offline?)'); }
+
+    btn.disabled = false;
+    btn.innerHTML = 'Post Request 🚀';
+}
+
+// ══════════════════════════════════════════════════
+//  DELETE REQUEST
+// ══════════════════════════════════════════════════
+async function deleteRequest(id) {
+    if (!confirm('Delete this request?')) return;
+    GLOBAL_REQUESTS = GLOBAL_REQUESTS.filter(r => r.id.toString() !== id.toString());
+    let myReqs = JSON.parse(localStorage.getItem('my_requests') || '[]');
+    myReqs = myReqs.filter(rid => rid !== id.toString());
+    localStorage.setItem('my_requests', JSON.stringify(myReqs));
+    renderBountyBoard();
+    showToast('Request deleted');
+    try {
+        await fetchWithTimeout(GOOGLE_SCRIPT_URL, { method:'POST', body: JSON.stringify({ action:'delete_request', id }) }, 8000);
+    } catch(e) { console.warn('Delete sync failed'); }
+}
+
+// ══════════════════════════════════════════════════
+//  FULFILL REQUEST (open upload modal pre-filled)
+// ══════════════════════════════════════════════════
+function fulfillRequest(sem, subject) {
+    document.getElementById('upSem').value = sem;
+    updateUploadSubjects();
+    // Try to pre-select the subject
+    const sel = document.getElementById('upSub');
+    for (let opt of sel.options) {
+        if (opt.value === subject) { sel.value = subject; break; }
+    }
+    openModal('uploadModal');
+}
+
+// ══════════════════════════════════════════════════
+//  LEADERBOARD
+// ══════════════════════════════════════════════════
+function getLeaderboardHTML() {
+    if (GLOBAL_NOTES_DB.length === 0) return '';
+    const contributors = {};
+    GLOBAL_NOTES_DB.forEach(note => {
+        let name = (note.uploader || '').trim();
+        if (name && !['anonymous','admin'].includes(name.toLowerCase())) {
+            if (!contributors[name]) contributors[name] = { uploads: 0, upvotes: 0 };
+            contributors[name].uploads++;
+            contributors[name].upvotes += parseInt(note.upvotes) || 0;
+        }
+    });
+    const top3 = Object.entries(contributors)
+        .map(([name, v]) => ({ name, ...v }))
+        .sort((a, b) => b.uploads - a.uploads || b.upvotes - a.upvotes)
+        .slice(0, 3);
+    if (top3.length === 0) return '';
+
+    const medals = ['🥇','🥈','🥉'];
+    const styles  = [
+        'bg-gradient-to-r from-yellow-50 to-yellow-100 border border-yellow-300 dark:from-yellow-900/30 dark:to-yellow-700/20 dark:border-yellow-700/50',
+        'bg-gradient-to-r from-slate-50 to-slate-200 border border-slate-300 dark:from-slate-800 dark:to-gray-700 dark:border-gray-600',
+        'bg-gradient-to-r from-orange-100 to-orange-200 border border-orange-300 dark:from-orange-950/40 dark:to-orange-900/40 dark:border-orange-800/50'
+    ];
+    const cards = top3.map((l, i) => `
+        <div class="p-4 rounded-2xl flex items-center gap-4 card-shadow ${styles[i]}">
+            <div class="text-4xl drop-shadow-md">${medals[i]}</div>
+            <div>
+                <h3 class="font-bold text-purple-900 dark:text-purple-100">${escapeHtml(l.name)}</h3>
+                <p class="text-xs font-semibold text-purple-700 dark:text-purple-300 mt-0.5">📚 ${l.uploads} Uploads &nbsp;👍 ${l.upvotes} Likes</p>
+            </div>
+        </div>`).join('');
+    return `<div class="mb-12"><h2 class="text-xl font-bold text-purple-800 dark:text-purple-300 mb-4 flex items-center gap-2"><span>🏆</span> Wall of Fame</h2><div class="grid grid-cols-1 md:grid-cols-3 gap-4">${cards}</div></div>`;
+}
+
+// ══════════════════════════════════════════════════
+//  NOTE CARD HTML (shared)
+// ══════════════════════════════════════════════════
+function noteCardHTML(item, showSubjectBadge = false) {
+    const downloadUrl = (item.file_url || '').replace('export=view','export=download');
+    const isUpvoted   = localStorage.getItem('upvoted_' + item.id);
+    const badge       = showSubjectBadge
+        ? `<span class="text-[10px] font-bold bg-purple-100 text-purple-700 px-2 py-1 rounded dark:bg-purple-900/30 dark:text-purple-300 mb-2 inline-block">${escapeHtml(item.subject || '')}</span>`
+        : `<span class="text-xs font-bold bg-green-100 text-green-700 px-2 py-1 rounded">${escapeHtml(item.material_type || 'Notes')}</span>`;
+
+    return `
+    <div class="card-wrapper relative bg-white dark:bg-gray-800 p-5 rounded-2xl card-shadow flex flex-col justify-between border border-purple-50 dark:border-gray-700 card-hover h-full group transition-all duration-300 select-none">
+        ${getBookmarkHTML(item.id)}
+        <div class="flex justify-between items-start mb-3 gap-3 pr-10">
+            <div class="flex-1 min-w-0">
+                ${badge}
+                <h3 class="font-bold text-purple-800 dark:text-purple-300 text-base leading-tight line-clamp-2 break-all group-hover:line-clamp-none transition-all duration-300 cursor-default mt-1" title="${escapeHtml(item.title || '')}">${escapeHtml(item.title || 'Untitled')}</h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 cursor-default">By: <b>${escapeHtml(item.uploader || 'Anonymous')}</b> • ${escapeHtml(item.file_size || 'PDF')}</p>
+            </div>
+            <button onclick="upvote('${escJs(item.id)}', this)"
+                class="${isUpvoted ? 'bg-green-100 text-green-700' : 'bg-purple-100 text-purple-700 hover:bg-purple-200'} shrink-0 px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1 transition z-10 relative cursor-pointer">
+                👍 <span class="count">${item.upvotes || 0}</span>
+            </button>
+        </div>
+        <div class="flex gap-2 w-full mt-auto pt-2">
+            <button onclick="openPDF('${escJs(item.file_url || '')}','${escJs(item.title || '')}')"
+                class="flex-1 bg-purple-600 text-white py-2 rounded-lg font-semibold hover:bg-purple-700 transition shadow-md text-sm cursor-pointer">👀 Read</button>
+            ${item.file_url
+                ? `<a href="${escapeHtml(downloadUrl)}" target="_blank" rel="noopener"
+                    class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white py-2 rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition shadow-md text-sm text-center cursor-pointer">⬇️ Save</a>`
+                : `<span class="flex-1 bg-gray-200 dark:bg-gray-600 text-gray-400 py-2 rounded-lg text-sm text-center">No Download</span>`
+            }
+        </div>
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════
+//  RENDER VIEWS
+// ══════════════════════════════════════════════════
+function renderYears() {
+    searchContainer.classList.remove('hidden');
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchResults').innerHTML = '';
+
+    const recent = GLOBAL_NOTES_DB.slice(0, 6);
+    const trendingHTML = recent.length === 0
+        ? `<p class="text-gray-500 italic ml-2">No notes yet. Be the first to upload!</p>`
+        : recent.map(item => `
+            <div class="card-wrapper relative bg-white dark:bg-gray-800 min-w-[270px] p-5 rounded-2xl card-shadow border border-purple-50 dark:border-gray-700 snap-center shrink-0 flex flex-col justify-between group transition-all duration-300 select-none">
+                ${getBookmarkHTML(item.id)}
+                <div>
+                    <div class="flex justify-between items-start mb-2 pr-10">
+                        <span class="text-xs font-bold bg-green-100 text-green-700 px-2 py-1 rounded">${escapeHtml(item.material_type || 'Notes')}</span>
+                        <span class="text-xs text-gray-500 dark:text-gray-400">Sem ${escapeHtml(String(item.semester || ''))}</span>
+                    </div>
+                    <h3 class="font-bold text-purple-800 dark:text-purple-300 line-clamp-2 break-all group-hover:line-clamp-none transition-all duration-300 cursor-default pr-10" title="${escapeHtml(item.subject || '')}">${escapeHtml(item.subject || '')}</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 break-all mb-3 group-hover:line-clamp-none transition-all duration-300 cursor-default pr-10" title="${escapeHtml(item.title || '')}">${escapeHtml(item.title || '')}</p>
+                </div>
+                <button onclick="openPDF('${escJs(item.file_url || '')}','${escJs(item.title || '')}')"
+                    class="w-full bg-purple-600 text-white py-2 rounded-lg text-sm font-semibold hover:bg-purple-700 transition mt-auto cursor-pointer">👀 View Fast</button>
+            </div>`
+        ).join('');
+
+    const yearCards = Object.keys(dataTree).map(year =>
+        `<div onclick="navigateTo('semesters',{year:'${escJs(year)}'})"
+            class="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center cursor-pointer card-shadow card-hover transition-all border border-purple-50 dark:border-gray-700">
+            <h3 class="font-semibold text-lg text-purple-800 dark:text-purple-300">${escapeHtml(year)}</h3>
+        </div>`
+    ).join('');
+
+    appDiv.innerHTML = `
+        <div class="text-center mb-10 mt-4 cursor-default">
+            <h1 class="text-4xl sm:text-5xl font-bold text-purple-700 dark:text-purple-400 mb-2">Notes Hub</h1>
+            <p class="text-base sm:text-lg text-purple-500 dark:text-gray-400">Read & Share Engineering Resources</p>
+            <p class="text-xs text-gray-400 mt-1">📊 ${GLOBAL_NOTES_DB.length} notes available</p>
+        </div>
+        ${getLeaderboardHTML()}
+        <div class="mb-12">
+            <h2 class="text-xl font-bold text-purple-800 dark:text-purple-300 mb-4 flex items-center gap-2">🔥 Recently Added</h2>
+            <div class="flex overflow-x-auto gap-4 pb-4 snap-x">${trendingHTML}</div>
+        </div>
+        <h2 class="text-xl font-bold text-purple-800 dark:text-purple-300 mb-6 pl-2 border-l-4 border-purple-500">Browse by Year</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">${yearCards}</div>`;
+}
+
+function renderSemesters(year) {
+    const semCards = Object.keys(dataTree[year] || {}).map(sem =>
+        `<div onclick="navigateTo('subjects',{year:'${escJs(year)}',sem:'${escJs(sem)}'})"
+            class="bg-purple-100/50 dark:bg-gray-800 rounded-2xl p-8 text-center cursor-pointer card-shadow card-hover border border-purple-100 dark:border-gray-700">
+            <h3 class="font-semibold text-lg text-purple-800 dark:text-purple-300">${escapeHtml(sem)}</h3>
+        </div>`
+    ).join('');
+    appDiv.innerHTML = `
+        <div class="mb-8"><button onclick="window.history.back()" class="text-purple-600 dark:text-purple-400 hover:underline mb-4 cursor-pointer">← Back</button>
+        <h2 class="text-2xl font-bold text-purple-800 dark:text-purple-300">${escapeHtml(year)} – Semesters</h2></div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">${semCards}</div>`;
+}
+
+function renderSubjects(year, sem) {
+    const subjects = (dataTree[year] && dataTree[year][sem]) || [];
+    const semNumber = sem.replace('Semester ', '');
+    const cards = subjects.map(sub =>
+        `<div onclick="navigateTo('materialTypes',{year:'${escJs(year)}',semNumber:'${semNumber}',subject:'${escJs(sub)}'})"
+            class="bg-white dark:bg-gray-800 rounded-2xl p-6 text-center cursor-pointer card-shadow card-hover border border-purple-50 dark:border-gray-700 flex flex-col justify-center items-center h-32">
+            <h3 class="font-bold text-purple-700 dark:text-purple-300 line-clamp-2 w-full px-2" title="${escapeHtml(sub)}">${escapeHtml(sub)}</h3>
+        </div>`
+    ).join('');
+    appDiv.innerHTML = `
+        <div class="mb-8"><button onclick="window.history.back()" class="text-purple-600 dark:text-purple-400 hover:underline mb-4 cursor-pointer">← Back</button>
+        <h2 class="text-2xl font-bold text-purple-800 dark:text-purple-300">${escapeHtml(sem)} – Subjects</h2></div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">${cards}</div>`;
+}
+
+function renderMaterialTypes(year, semNumber, subject) {
+    appDiv.innerHTML = `
+        <div class="mb-8"><button onclick="window.history.back()" class="text-purple-600 dark:text-purple-400 hover:underline mb-4 cursor-pointer">← Back to Subjects</button>
+        <h2 class="text-2xl font-bold text-purple-800 dark:text-purple-300">${escapeHtml(subject)}</h2></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div onclick="navigateTo('notes',{semNumber:'${semNumber}',subject:'${escJs(subject)}',type:'Notes'})"
+                class="bg-white dark:bg-gray-800 rounded-2xl p-10 text-center cursor-pointer card-shadow card-hover border-2 border-emerald-50 dark:border-gray-600">
+                <span class="text-5xl mb-4 block">📚</span>
+                <h3 class="font-bold text-xl text-emerald-700 dark:text-emerald-400">Study Notes</h3>
+            </div>
+            <div onclick="navigateTo('notes',{semNumber:'${semNumber}',subject:'${escJs(subject)}',type:'Question Paper'})"
+                class="bg-white dark:bg-gray-800 rounded-2xl p-10 text-center cursor-pointer card-shadow card-hover border-2 border-blue-50 dark:border-gray-600">
+                <span class="text-5xl mb-4 block">📝</span>
+                <h3 class="font-bold text-xl text-blue-700 dark:text-blue-400">Question Papers</h3>
+            </div>
+        </div>`;
+}
+
+function renderNotes(semNumber, subject, type) {
+    // FIX: filter using material_type (normalised in init)
+    const data = GLOBAL_NOTES_DB
+        .filter(n => String(n.semester) === String(semNumber) && n.subject === subject && n.material_type === type)
+        .sort((a, b) => (b.upvotes || 0) - (a.upvotes || 0));
+
+    const cards = data.length === 0
+        ? `<div class="col-span-full text-center py-12 bg-white dark:bg-gray-800 rounded-2xl card-shadow border-2 border-dashed border-purple-100 dark:border-gray-700">
+                <p class="text-purple-400 dark:text-purple-300 mb-4">No ${type}s found yet.</p>
+                <button onclick="toggleUpload()" class="bg-purple-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-purple-700 transition cursor-pointer">⬆️ Be the first to upload!</button>
+            </div>`
+        : data.map(item => noteCardHTML(item, false)).join('');
+
+    appDiv.innerHTML = `
+        <div class="mb-6">
+            <button onclick="window.history.back()" class="text-purple-600 dark:text-purple-400 hover:underline mb-4 cursor-pointer">← Back</button>
+            <h2 class="text-2xl font-bold text-purple-800 dark:text-purple-300 border-b border-purple-200 dark:border-gray-600 pb-2">${escapeHtml(subject)} – ${escapeHtml(type)}s</h2>
+        </div>
+        <div class="bg-yellow-50 dark:bg-yellow-900/30 border-l-4 border-yellow-400 p-4 rounded-r-lg mb-8 cursor-default">
+            <p class="text-sm text-yellow-800 dark:text-yellow-200 font-medium">💡 Jo notes best lagein unhe <b>Upvote (👍)</b> zaroor karein — sabka fayda hoga!</p>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">${cards}</div>`;
+}
+
+function renderLibrary() {
+    const savedIds   = JSON.parse(localStorage.getItem('my_library') || '[]');
+    const savedNotes = GLOBAL_NOTES_DB.filter(n => savedIds.includes(n.id.toString()));
+
+    const cards = savedNotes.length === 0
+        ? `<div class="col-span-full text-center py-16 bg-white dark:bg-gray-800 rounded-2xl card-shadow border-2 border-dashed border-yellow-200 dark:border-gray-700">
+                <p class="text-yellow-600 dark:text-yellow-400 font-bold text-lg mb-2">Your library is empty! 📭</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Click the ⭐ icon on any note to save it here.</p>
+            </div>`
+        : savedNotes.map(item => noteCardHTML(item, true)).join('');
+
+    appDiv.innerHTML = `
+        <div class="mb-6 flex justify-between items-center">
+            <div>
+                <button onclick="window.history.back()" class="text-purple-600 dark:text-purple-400 hover:underline mb-2 cursor-pointer block">← Back</button>
+                <h2 class="text-3xl font-bold text-yellow-600 dark:text-yellow-400">My Library ⭐</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Your personal collection for quick revision!</p>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">${cards}</div>`;
+}
+
+function renderBountyBoard() {
+    const myReqs = JSON.parse(localStorage.getItem('my_requests') || '[]');
+
+    const cards = GLOBAL_REQUESTS.length === 0
+        ? `<div class="col-span-full text-center py-16 bg-white dark:bg-gray-800 rounded-2xl card-shadow border-2 border-dashed border-orange-200 dark:border-gray-700">
+                <p class="text-orange-500 dark:text-orange-400 font-bold text-lg">No requests yet! Everyone is fully prepared 😂</p>
+            </div>`
+        : GLOBAL_REQUESTS.map(req => {
+            const deleteBtn = myReqs.includes(req.id.toString())
+                ? `<button onclick="deleteRequest('${escJs(req.id.toString())}')" class="text-red-500 hover:text-red-700 text-xs font-bold border border-red-200 bg-red-50 px-2 py-0.5 rounded cursor-pointer z-10 transition">🗑️ Delete</button>`
+                : '';
+            return `
+            <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl card-shadow border-l-4 border-orange-400 flex flex-col justify-between hover:shadow-lg transition cursor-default">
+                <div>
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[10px] font-bold bg-orange-100 text-orange-700 px-2 py-1 rounded dark:bg-orange-900/30 dark:text-orange-300">Sem ${escapeHtml(String(req.semester || ''))}</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] text-gray-400">${escapeHtml(req.date || '')}</span>
+                            ${deleteBtn}
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-slate-800 dark:text-gray-100 text-lg leading-tight mb-2 pr-2">${escapeHtml(req.subject || '')}</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 bg-orange-50 dark:bg-gray-700/50 p-3 rounded-lg border border-orange-100 dark:border-gray-600 italic mb-4">"${escapeHtml(req.message || '')}"</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">👤 Requested by: <b>${escapeHtml(req.name || 'Anonymous')}</b></p>
+                </div>
+                <button onclick="fulfillRequest('${escJs(String(req.semester))}','${escJs(req.subject || '')}')"
+                    class="w-full bg-purple-600 text-white py-2.5 rounded-lg font-bold hover:bg-purple-700 shadow-md text-sm transition cursor-pointer">⬆️ I have this! Upload Now</button>
+            </div>`;
+        }).join('');
+
+    appDiv.innerHTML = `
+        <div class="mb-6 flex justify-between items-center">
+            <div>
+                <button onclick="window.history.back()" class="text-purple-600 dark:text-purple-400 hover:underline mb-2 cursor-pointer block">← Back</button>
+                <h2 class="text-3xl font-bold text-orange-600 dark:text-orange-400">Bounty Board 🎯</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Help your friends by uploading what they need!</p>
+            </div>
+            <button onclick="openRequestModal()"
+                class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white px-5 py-2.5 rounded-xl font-bold shadow-lg transition transform hover:-translate-y-1 cursor-pointer">
+                + Ask Note
+            </button>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">${cards}</div>`;
+}
+
+// ══════════════════════════════════════════════════
+//  SHARE
+// ══════════════════════════════════════════════════
+function shareApp() {
+    const shareData = {
+        title: 'Notes Hub - Collaborative Learning 📚',
+        text:  `*Notes Hub: बेहतर पढ़ाई, अब सबके साथ!* 🚀\n\nSKIT ke notes aur PYQ papers yahan milenge. Upload karke doston ki bhi madad karo!\n`,
+        url:   window.location.href
+    };
+    if (navigator.share) {
+        navigator.share(shareData).catch(() => {});
+    } else {
+        navigator.clipboard.writeText(shareData.text + shareData.url)
+            .then(() => showToast('✅ Link copied to clipboard!'))
+            .catch(() => showToast('Could not copy – please copy the URL manually.'));
+    }
+}
+
+// ══════════════════════════════════════════════════
+//  SERVICE WORKER (PWA)
+// ══════════════════════════════════════════════════
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+            .then(reg => console.log('SW registered', reg.scope))
+            .catch(err => console.warn('SW registration failed:', err));
+    }
+}
+
+// ══════════════════════════════════════════════════
+//  CLOSE MODAL ON OVERLAY CLICK
+// ══════════════════════════════════════════════════
+document.getElementById('uploadModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal('uploadModal');
+});
+document.getElementById('requestModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal('requestModal');
+});
+
+// ══════════════════════════════════════════════════
+//  CLOSE MODALS WITH ESCAPE KEY
+// ══════════════════════════════════════════════════
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        if (document.getElementById('pdfModal').classList.contains('open')) closePDF();
+        else if (document.getElementById('uploadModal').style.display === 'flex')  closeModal('uploadModal');
+        else if (document.getElementById('requestModal').style.display === 'flex') closeModal('requestModal');
+    }
+});
+
+// ══════════════════════════════════════════════════
+//  BOOT
+// ══════════════════════════════════════════════════
+init();
+</script>
 </body>
 </html>
