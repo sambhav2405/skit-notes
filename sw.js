@@ -9,8 +9,18 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-    // Basic pass-through for now, just to satisfy PWA install requirements
-    event.respondWith(fetch(event.request).catch(() => {
-        return new Response("Offline - Check Internet Connection");
-    }));
+    // Only intercept navigation requests for offline fallback
+    if (event.request.mode === 'navigate') {
+        event.respondWith(
+            fetch(event.request).catch(() => {
+                return new Response("Offline - Check Internet Connection. Please connect to the internet to use Notes Hub.", {
+                    headers: { 'Content-Type': 'text/html' }
+                });
+            })
+        );
+    } else {
+        // For API calls (like Google Apps Script) and assets, just fetch normally
+        // without the offline wrapper so real errors (like CORS) can be caught by the app.
+        event.respondWith(fetch(event.request));
+    }
 });
