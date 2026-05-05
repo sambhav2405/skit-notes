@@ -187,7 +187,7 @@
 
         <!-- File size warning -->
         <div class="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-xl p-3 mb-4 text-xs text-blue-700 dark:text-blue-300">
-            ℹ️ Only PDF files accepted. Maximum file size: <b>100 MB</b> per file. Large files upload in chunks automatically.
+            ℹ️ Only PDF files accepted. No size limit (up to 1GB). Large files upload in chunks automatically even in background.
         </div>
 
         <div class="space-y-4 mb-4">
@@ -229,7 +229,7 @@
             <input type="file" id="fileInput" multiple accept=".pdf" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" onchange="handleFileSelect(event)">
             <div class="text-purple-500 text-4xl mb-2 pointer-events-none">📁</div>
             <p class="font-bold text-purple-800 dark:text-purple-200 pointer-events-none">Click or Drag & Drop PDF Files</p>
-            <p class="text-xs text-purple-600 mt-1 pointer-events-none">Earn credits by uploading! Max 10MB per file.</p>
+            <p class="text-xs text-purple-600 mt-1 pointer-events-none">Earn credits by uploading! Any size PDF supported.</p>
         </div>
         <div id="uploadQueue" class="mt-6 space-y-3"></div>
     </div>
@@ -252,7 +252,7 @@
 //  CONFIGURATION
 // ══════════════════════════════════════════════════
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4Bk6I_G9a5-4AtooVhTmzCrCKHqrjIgjcVCULg2Zz_qgRzpWHvK54fVID6siNZhrs/exec';
-const MAX_FILE_SIZE_MB   = 100;
+const MAX_FILE_SIZE_MB   = 1024;
 const CHUNK_SIZE_MB      = 4;                    // 4MB per chunk (safe under GAS 6MB limit)
 const FETCH_TIMEOUT_MS   = 20000;                // 20s timeout for data load
 const UPLOAD_TIMEOUT_MS  = 300000;               // 5 min per chunk
@@ -643,24 +643,49 @@ function readSliceAsBase64(blob) {
     });
 }
 
-// ── Helper: POST one chunk to GAS with timeout ────
-async function postChunk(payload, signal) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), UPLOAD_TIMEOUT_MS);
-    // Merge external cancel signal
-    signal.addEventListener('abort', () => controller.abort(), { once: true });
+// ── Keep Screen Awake during upload ────────────────
+let wakeLock = null;
+async function requestWakeLock() {
     try {
-        const res = await fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            body: JSON.stringify(payload),
-            signal: controller.signal
-        });
-        clearTimeout(timer);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return await res.json();
-    } catch (e) {
-        clearTimeout(timer);
-        throw e;
+        if ('wakeLock' in navigator) {
+            wakeLock = await navigator.wakeLock.request('screen');
+        }
+    } catch (err) { console.warn('Wake Lock error:', err); }
+}
+function releaseWakeLock() {
+    if (wakeLock !== null) {
+        wakeLock.release().catch(() => {});
+        wakeLock = null;
+    }
+}
+
+// ── Helper: POST one chunk to GAS with retry & timeout ────
+async function postChunk(payload, signal) {
+    let retries = 10; // Retry up to 10 times (helps when backgrounded)
+    while (retries >= 0) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), UPLOAD_TIMEOUT_MS);
+        const abortHandler = () => controller.abort();
+        signal.addEventListener('abort', abortHandler, { once: true });
+        try {
+            const res = await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                signal: controller.signal
+            });
+            clearTimeout(timer);
+            signal.removeEventListener('abort', abortHandler);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return await res.json();
+        } catch (e) {
+            clearTimeout(timer);
+            signal.removeEventListener('abort', abortHandler);
+            if (e.name === 'AbortError' && signal.aborted) throw e; // User cancelled
+            if (retries === 0) throw e;
+            retries--;
+            console.warn(`Chunk upload failed, retrying... (${retries} left)`, e);
+            await new Promise(r => setTimeout(r, 3000)); // wait 3s before retry
+        }
     }
 }
 
@@ -673,6 +698,8 @@ async function processUpload(file) {
     if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
         showToast(`❌ ${file.name} — ${MAX_FILE_SIZE_MB}MB se badi file nahi chalegi!`); return;
     }
+
+    requestWakeLock(); // Keep screen awake
 
     const id       = Date.now().toString() + Math.floor(Math.random() * 9999);
     const sem      = document.getElementById('upSem').value;
@@ -806,6 +833,10 @@ async function processUpload(file) {
         }
     } finally {
         delete uploadControllers[id];
+        // Only release wake lock if no other uploads are active
+        if (Object.keys(uploadControllers).length === 0) {
+            releaseWakeLock();
+        }
     }
 }
 
